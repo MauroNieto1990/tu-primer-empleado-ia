@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenido — Tu Primer Empleado IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--surface:#fafbfc;--surface-2:#f4f5f8;
+  --ink:#0b0b0f;--ink-2:#3f3f46;--muted:#71717a;
+  --line:#e8e8ed;--line-strong:#d4d4db;
+  --accent:#2354f7;--accent-d:#1b41c7;
+  --accent-wash:#eef2ff;--accent-wash-2:#f4f6ff;
+  --green:#16a34a;--green-wash:#f0fdf4;
+  --r:16px;--r-sm:10px;--r-lg:22px;
+  --maxw:720px;
+  --sh-sm:0 1px 3px rgba(11,11,15,.05),0 1px 2px rgba(11,11,15,.04);
+  --sh-md:0 8px 32px rgba(11,11,15,.07),0 2px 8px rgba(11,11,15,.04);
+  --sh-blue:0 16px 48px rgba(35,84,247,.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink-2);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;color:var(--ink);letter-spacing:-.02em;line-height:1.15}
+::selection{background:var(--accent);color:#fff}
+
+/* ── layout ── */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.section{padding:72px 0}
+.section+.section{border-top:1px solid var(--line)}
+
+/* ── header ── */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.bar{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.mark{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-weight:700;font-size:14.5px;color:var(--ink);letter-spacing:-.01em}
+.glyph{width:26px;height:26px;border-radius:7px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}
+.step-pill{font-family:'Inter';font-size:12.5px;font-weight:600;color:var(--accent-d);background:var(--accent-wash);border:1px solid rgba(35,84,247,.18);border-radius:999px;padding:5px 12px;display:flex;align-items:center;gap:6px}
+.step-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(35,84,247,.5)}70%{box-shadow:0 0 0 7px rgba(35,84,247,0)}100%{box-shadow:0 0 0 0 rgba(35,84,247,0)}}
+
+/* ── hero ── */
+.hero{padding:80px 0 64px;text-align:center;position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:-200px 0 auto;height:520px;z-index:0;
+  background:radial-gradient(640px 320px at 50% 0%, rgba(35,84,247,.07), transparent 70%);
+  pointer-events:none;
+}
+.hero>*{position:relative;z-index:1}
+.hero-emo{font-size:52px;line-height:1;margin-bottom:24px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+h1.hero-title{font-size:clamp(36px,6vw,58px);font-weight:700;color:var(--ink);max-width:640px;margin:0 auto}
+.hero-sub{margin-top:24px;font-size:clamp(16px,2vw,18.5px);color:var(--ink-2);max-width:540px;margin-left:auto;margin-right:auto;line-height:1.65}
+.hero-sub p+p{margin-top:8px}
+.hero-sub .emphasis{color:var(--ink);font-weight:500}
+
+/* slogan card */
+.slogan-card{
+  margin:40px auto 0;max-width:520px;
+  padding:22px 28px;
+  border:1px solid rgba(35,84,247,.2);border-left:4px solid var(--accent);
+  border-radius:var(--r);
+  background:linear-gradient(180deg,var(--accent-wash-2),#fff);
+  box-shadow:var(--sh-sm);
+}
+.slogan-card p{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(16px,1.8vw,18.5px);
+  font-weight:600;color:var(--ink);
+  line-height:1.4;letter-spacing:-.01em;
+}
+
+/* ── steps ── */
+.steps-grid{display:flex;flex-direction:column;gap:14px;margin-top:36px}
+.step-card{
+  display:flex;align-items:flex-start;gap:18px;
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:22px 24px;background:#fff;
+  box-shadow:var(--sh-sm);
+  transition:border-color .18s,box-shadow .2s,transform .18s;
+}
+.step-card:hover{border-color:#c9d1f7;box-shadow:var(--sh-md);transform:translateY(-2px)}
+.step-num{
+  flex:none;width:38px;height:38px;border-radius:11px;
+  background:var(--accent);color:#fff;
+  font-family:'Space Grotesk';font-weight:700;font-size:15px;
+  display:grid;place-items:center;margin-top:2px;
+}
+.step-card h4{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.step-card p{font-size:15px;color:var(--muted);margin-top:5px;line-height:1.55}
+.step-card .step-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;color:var(--green);
+  background:var(--green-wash);border:1px solid #bbf7d0;
+  border-radius:999px;padding:4px 10px;margin-top:10px;
+}
+.step-card .file-name{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'Inter';font-size:13.5px;font-weight:600;color:var(--accent-d);
+  background:var(--accent-wash);border:1px solid rgba(35,84,247,.18);
+  border-radius:8px;padding:6px 12px;margin-top:10px;
+}
+
+/* ── modules grid ── */
+.modules-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:36px;
+}
+.mod{
+  border:1px solid var(--line);border-radius:var(--r);padding:20px;
+  background:#fff;display:flex;gap:14px;align-items:flex-start;
+  transition:border-color .18s,box-shadow .2s,transform .18s;
+}
+.mod:hover{border-color:#c9d1f7;box-shadow:var(--sh-md);transform:translateY(-2px)}
+.mod-icon{flex:none;width:44px;height:44px;border-radius:12px;background:var(--accent-wash);display:grid;place-items:center;font-size:20px}
+.mod h4{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+.mod p{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.mod.featured{border-color:#dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff)}
+.mod-badge{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-wash);border-radius:999px;padding:3px 9px;margin-top:8px;letter-spacing:.02em}
+
+/* ── advice card ── */
+.advice{
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:32px;background:var(--surface);margin-top:0;
+}
+.advice .ico{font-size:32px;margin-bottom:16px;display:block}
+.advice h3{font-size:21px;font-weight:600}
+.advice p{font-size:16.5px;color:var(--ink-2);margin-top:14px;line-height:1.7}
+.advice p+p{margin-top:10px}
+.advice strong{color:var(--ink);font-weight:600}
+
+/* ── support ── */
+.support-box{
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:28px 30px;background:#fff;
+  display:flex;align-items:flex-start;gap:20px;
+  box-shadow:var(--sh-sm);
+}
+.support-icon{
+  flex:none;width:48px;height:48px;border-radius:13px;
+  background:var(--surface-2);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:22px;
+}
+.support-box h4{font-size:17px;font-weight:600}
+.support-box p{font-size:15px;color:var(--muted);margin-top:6px;line-height:1.55}
+.btn-support{
+  display:inline-flex;align-items:center;gap:8px;margin-top:14px;
+  font-family:'Inter';font-weight:600;font-size:14.5px;
+  color:var(--ink);background:#fff;
+  border:1px solid var(--line-strong);border-radius:10px;
+  padding:10px 18px;cursor:pointer;
+  transition:border-color .16s,color .16s,background .16s;
+}
+.btn-support:hover{border-color:var(--accent);color:var(--accent-d);background:var(--accent-wash-2)}
+
+/* ── section headings ── */
+.s-eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.s-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+h2.s-title{font-size:clamp(26px,3.8vw,34px);font-weight:700}
+.s-sub{font-size:17px;color:var(--muted);margin-top:12px;max-width:540px;line-height:1.6}
+
+/* ── CTA final ── */
+.cta-final{
+  text-align:center;
+  background:var(--ink);border-radius:24px;
+  padding:56px 32px;
+  background-image:radial-gradient(480px 220px at 50% -10%, rgba(35,84,247,.3), transparent 70%);
+}
+.cta-final p{
+  font-family:'Space Grotesk';font-size:clamp(22px,3.2vw,30px);
+  font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1.25;margin-bottom:32px;
+}
+.cta-final p span{color:rgba(255,255,255,.55);font-weight:500;font-size:.72em;display:block;margin-top:8px;letter-spacing:0;font-family:'Inter'}
+.cta-buttons{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn-download{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Inter';font-weight:600;font-size:17px;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:14px;padding:16px 30px;
+  cursor:pointer;box-shadow:var(--sh-blue);
+  transition:background .18s,transform .15s;
+}
+.btn-download:hover{background:var(--accent-d);transform:translateY(-2px)}
+.btn-start{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:'Inter';font-weight:600;font-size:16px;
+  background:rgba(255,255,255,.1);color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:14px;padding:16px 26px;
+  cursor:pointer;
+  transition:background .18s,border-color .18s,transform .15s;
+}
+.btn-start:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+
+/* ── footer ── */
+footer{padding:40px 0 52px;text-align:center;border-top:1px solid var(--line)}
+footer p{font-size:13px;color:var(--muted)}
+footer strong{color:var(--ink-2)}
+
+/* ── reveal ── */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ── responsive ── */
+@media(max-width:640px){
+  body{font-size:16px}
+  .section{padding:52px 0}
+  .wrap{padding:0 20px}
+  .hero{padding:56px 0 44px}
+  .bar{padding:0 20px}
+  .modules-grid{grid-template-columns:1fr}
+  .support-box{flex-direction:column;gap:14px}
+  .cta-final{padding:40px 22px}
+  .cta-buttons{flex-direction:column}
+  .btn-download,.btn-start{justify-content:center;font-size:16px}
+  .hero-emo{font-size:42px}
+  .slogan-card{padding:18px 20px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="mark">
+      <span class="glyph">IA</span>
+      Tu Primer Empleado IA
+    </div>
+    <div class="step-pill">
+      <span class="dot"></span>
+      Acceso activado
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="hero-emo">🎉</span>
+      <h1 class="hero-title reveal">¡Bienvenido a Tu Primer Empleado IA!</h1>
+      <div class="hero-sub reveal">
+        <p>Acabás de incorporar una nueva forma de trabajar.</p>
+        <p>
+          <span class="emphasis">No compraste un curso.</span><br>
+          <span class="emphasis">No compraste un ebook.</span><br>
+          <span class="emphasis">No compraste una colección de prompts.</span>
+        </p>
+        <p>Compraste un sistema pensado para ayudarte a dejar de hacer todo solo.</p>
+      </div>
+      <div class="slogan-card reveal">
+        <p>"Porque el tiempo que recuperás vale mucho más que el precio que pagás."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EMPEZAR ── -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="s-eyebrow"><span class="dot"></span>Primeros pasos</div>
+      <h2 class="s-title">🚀 Empezar te va a llevar menos de un minuto</h2>
+      <p class="s-sub">No hay configuraciones. No hay teoría. Solo tres pasos y ya estás adentro.</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">1</span>
+          <div>
+            <h4>Descargá el sistema</h4>
+            <p>Todos los archivos van a llegar a tu correo o al enlace de descarga. Guardálos en una sola carpeta en tu computadora.</p>
+            <span class="step-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+              Sin instalaciones
+            </span>
+          </div>
+        </div>
+        <div class="step-card">
+          <span class="step-num">2</span>
+          <div>
+            <h4>Abrí el archivo de bienvenida</h4>
+            <p>Dentro de la carpeta, encontrás el archivo por el que tenés que empezar. Lo abrís con doble clic y se abre directo en tu navegador.</p>
+            <span class="file-name">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              01 - 🚀 ABRIR PRIMERO.html
+            </span>
+          </div>
+        </div>
+        <div class="step-card">
+          <span class="step-num">3</span>
+          <div>
+            <h4>Tu Primer Empleado IA empieza a trabajar con vos</h4>
+            <p>En unos minutos vas a presentarle tu negocio a la IA y vas a tener tu primera victoria. A partir de ahí, el sistema trabaja con vos cuando lo necesitás.</p>
+            <span class="step-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+              Sin conocimientos de IA
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUÉ COMPRASTE ── -->
+  <section class="section" style="background:var(--surface)">
+    <div class="wrap reveal">
+      <div class="s-eyebrow"><span class="dot"></span>Tu sistema completo</div>
+      <h2 class="s-title">📦 ¿Qué acabás de activar?</h2>
+      <p class="s-sub">Un ecosistema completo de trabajo con IA, diseñado para los problemas reales de tu negocio.</p>
+
+      <div class="modules-grid">
+        <div class="mod featured">
+          <span class="mod-icon">🏠</span>
+          <div>
+            <h4>Dashboard Central</h4>
+            <p>Tu escritorio de trabajo. Buscás un problema, encontrás la solución en segundos.</p>
+            <span class="mod-badge">Centro del sistema</span>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🚀</span>
+          <div>
+            <h4>Empezá por Acá</h4>
+            <p>Tu guía de bienvenida. En 15 minutos el sistema ya conoce tu negocio.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">💬</span>
+          <div>
+            <h4>El Asistente Comercial</h4>
+            <p>Responder clientes, presupuestos, seguimientos. Sin improvisar, sin empezar de cero.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">📱</span>
+          <div>
+            <h4>El Community Manager</h4>
+            <p>Ideas de contenido, posts, reels e historias. La pregunta "¿qué publico hoy?" empieza a tener respuesta.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">📚</span>
+          <div>
+            <h4>Biblioteca Maestra</h4>
+            <p>Emails difíciles, cobros, disculpas, aclaraciones. Los mensajes que postergás, resueltos.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🏢</span>
+          <div>
+            <h4>El Director General IA</h4>
+            <p>Ordenar tareas, planificar la semana, delegar, decidir. Tu cabeza más ordenada cada día.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">💰</span>
+          <div>
+            <h4>El Creador de Dinero IA</h4>
+            <p>Ideas para vender más, ofertas, nuevos productos. Tu socio comercial disponible siempre.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🎯</span>
+          <div>
+            <h4>El Coach Personal IA</h4>
+            <p>Decisiones difíciles, hábitos, foco. Pensás mejor cuando tenés con quién pensar.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🗓️</span>
+          <div>
+            <h4>Libro de Misiones · 21 Días</h4>
+            <p>Una acción por día para que trabajar con IA se convierta en un hábito real, no en algo ocasional.</p>
+          </div>
+        </div>
+        <div class="mod featured">
+          <span class="mod-icon">⭐</span>
+          <div>
+            <h4>Biblioteca de 100 Prompts</h4>
+            <p>Más de 100 conversaciones listas. Buscás la situación, copiás y pegás. Resolviste.</p>
+            <span class="mod-badge">+100 situaciones</span>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🎩</span>
+          <div>
+            <h4>Pensémoslo Juntos</h4>
+            <p>Tu espacio para pensar. Contás la situación como si hablaras con un socio y el sistema te orienta.</p>
+          </div>
+        </div>
+        <div class="mod">
+          <span class="mod-icon">🔍</span>
+          <div>
+            <h4>Buscador Inteligente</h4>
+            <p>Escribís el problema. El sistema te lleva directo a la herramienta correcta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONSEJO ── -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="advice">
+        <span class="ico">❤️</span>
+        <h3>Un consejo antes de empezar</h3>
+        <p>No intentes recorrer todo hoy. No es necesario y no es para eso.</p>
+        <p>
+          <strong>Usá el sistema cuando tengas una necesidad real.</strong> Cada vez que necesites responder un cliente, organizar una idea, crear contenido o tomar una decisión, abrilo y dejá que te acompañe.
+        </p>
+        <p>Así es como funciona un buen compañero de trabajo: no te da todo de una sola vez. Está ahí cuando lo necesitás.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOPORTE ── -->
+  <section class="section" style="background:var(--surface)">
+    <div class="wrap reveal">
+      <div class="s-eyebrow"><span class="dot"></span>Estamos acá</div>
+      <h2 class="s-title">🙋 ¿Necesitás ayuda?</h2>
+      <p class="s-sub" style="margin-bottom:28px">Si tenés algún inconveniente para acceder al sistema o alguna duda sobre cómo empezar, no dudes en escribirnos.</p>
+
+      <div class="support-box">
+        <span class="support-icon">✉️</span>
+        <div>
+          <h4>Soporte directo</h4>
+          <p>Respondemos todos los mensajes. Si algo no funciona o no encontrás lo que necesitás, escribinos y lo resolvemos juntos.</p>
+          <a href="SOPORTE_URL_AQUI" class="btn-support" id="btnSoporte">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+            Contactar soporte
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA FINAL ── -->
+  <section class="section" id="descarga">
+    <div class="wrap reveal">
+      <div class="cta-final">
+        <p>
+          Tu Primer Empleado IA está listo.
+          <span>Ya no tenés que hacerlo todo solo.</span>
+        </p>
+        <div class="cta-buttons">
+          <a href="DESCARGA_URL_AQUI" id="btnDescarga" class="btn-download">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            ⬇️ Descargar Tu Primer Empleado IA
+          </a>
+          <a href="SISTEMA_URL_AQUI" id="btnComenzar" class="btn-start">
+            🚀 Empezar recorrido
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Tu Primer Empleado IA</strong> — Sistema operativo de trabajo con IA para emprendedores.</p>
+    <p style="margin-top:6px">Porque el tiempo que recuperás vale mucho más que el precio que pagás.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ─────────────────────────────────────────────
+     ENLACES — reemplazá estas constantes cuando
+     tengas las URLs reales de descarga y acceso.
+  ───────────────────────────────────────────── */
+  var DESCARGA_URL   = 'https://drive.google.com/file/d/1dzUU05LCIVOC2qd_81t1wW__bnfBqNYD/view?usp=sharing';  // Ej: link de Drive, Dropbox, etc.
+  var SISTEMA_URL    = '01 - 🚀 ABRIR PRIMERO.html';
+  var SOPORTE_URL    = 'https://wa.me/5491130147627?text=Hola,%20compr%C3%A9%20Tu%20Primer%20Empleado%20IA%20y%20necesito%20ayuda.';  // Ej: mailto:soporte@tudominio.com o link de WhatsApp
+
+  function setHref(id, url, fallback){
+    var el = document.getElementById(id);
+    if(!el) return;
+    if(url){ el.href = url; }
+    else if(fallback){ el.addEventListener('click', function(e){ e.preventDefault(); fallback(); }); }
+  }
+
+  setHref('btnDescarga', DESCARGA_URL, function(){
+    document.getElementById('descarga').scrollIntoView({behavior:'smooth'});
+  });
+  setHref('btnComenzar', SISTEMA_URL);
+  setHref('btnSoporte',  SOPORTE_URL, function(){
+    alert('Para soporte, ponete en contacto con nosotros. ¡Estamos acá para ayudarte!');
+  });
+
+  /* ── reveal on scroll ── */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

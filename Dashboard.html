@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — Tu Primer Empleado IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;--panel:#fafbfc;--panel-2:#f5f6f8;--ink:#0b0b0f;--ink-soft:#3f3f46;
+    --muted:#71717a;--line:#ececef;--line-strong:#e2e2e8;--accent:#2354f7;--accent-deep:#1b41c7;
+    --accent-wash:#eef2ff;--accent-wash-2:#f4f6ff;--radius:16px;--radius-sm:12px;--maxw:1080px;
+    --shadow-sm:0 1px 2px rgba(11,11,15,.04),0 1px 1px rgba(11,11,15,.03);
+    --shadow-md:0 8px 30px rgba(11,11,15,.06),0 2px 6px rgba(11,11,15,.04);
+    --shadow-blue:0 12px 34px rgba(35,84,247,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink-soft);font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,.display{font-family:"Space Grotesk",sans-serif;color:var(--ink);letter-spacing:-.02em;line-height:1.15}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .section{padding:46px 0}
+
+  /* ---------- header ---------- */
+  header.bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+  .bar-inner{max-width:var(--maxw);margin:0 auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .mark{display:flex;align-items:center;gap:8px;font-family:"Space Grotesk";font-weight:600;color:var(--ink);font-size:15px;flex:none;white-space:nowrap}
+  .mark .glyph{width:25px;height:25px;border-radius:7px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;flex:none}
+  .mk-txt{white-space:nowrap}
+  .nav{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0}
+  .nav::-webkit-scrollbar{display:none}
+  .np{display:inline-flex;align-items:center;gap:6px;font-family:"Inter";font-size:13px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:6px 11px;cursor:pointer;white-space:nowrap;transition:all .16s;flex:none}
+  .np:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+  .np.accent{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:var(--shadow-blue)}
+  .np.accent:hover{background:var(--accent-deep);color:#fff}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:64px 0 34px;text-align:center;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:-160px 0 auto 0;height:440px;z-index:-1;background:radial-gradient(620px 300px at 50% 0%, rgba(35,84,247,.07), rgba(35,84,247,0) 70%)}
+  .hero h1{font-size:clamp(32px,5vw,50px);font-weight:700}
+  .hero .sub{font-size:clamp(16px,2vw,19px);color:var(--muted);margin-top:14px}
+  .bigsearch{position:relative;max-width:620px;margin:32px auto 0}
+  .bigsearch-box{display:flex;align-items:center;gap:13px;border:1px solid var(--line-strong);border-radius:16px;padding:18px 20px;background:#fff;box-shadow:var(--shadow-md);transition:border-color .16s,box-shadow .2s}
+  .bigsearch-box:focus-within{border-color:var(--accent);box-shadow:0 14px 40px rgba(35,84,247,.16)}
+  .bigsearch-box > svg{flex:none;color:var(--muted)}
+  .bigsearch-box input{flex:1;border:none;outline:none;font-family:"Inter";font-size:17px;color:var(--ink);background:transparent}
+  .bigsearch-box input::placeholder{color:#a1a1aa}
+  .search-results{position:absolute;left:0;right:0;top:calc(100% + 10px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-md);overflow:hidden;z-index:30;display:none;text-align:left}
+  .search-results.show{display:block;animation:fade .15s ease}
+  .sr{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border:none;background:#fff;width:100%;text-align:left;font-family:"Inter";border-bottom:1px solid var(--line);transition:background .12s}
+  .sr:last-child{border-bottom:none}
+  .sr:hover{background:var(--accent-wash-2)}
+  .sr .sr-emo{font-size:17px;flex:none;width:38px;height:38px;border-radius:10px;background:var(--accent-wash);display:grid;place-items:center}
+  .sr .sr-tit{font-size:14.5px;font-weight:600;color:var(--ink)}
+  .sr .sr-sub{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .sr .sr-mod{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--accent-deep);white-space:nowrap}
+  .sr-empty{padding:16px;color:var(--muted);font-size:14px;text-align:center}
+  .hero-qh{margin-top:18px;display:inline-flex;align-items:center;gap:9px;font-family:"Inter";font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:9px 16px;cursor:pointer;transition:all .16s}
+  .hero-qh:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2);transform:translateY(-1px)}
+
+  /* ---------- section heads ---------- */
+  .shead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px}
+  .shead h2{font-size:clamp(20px,3vw,25px);font-weight:600}
+  .shead .hint{font-size:13.5px;color:var(--muted)}
+
+  /* ---------- quick access cards ---------- */
+  .qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .qcard{display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left;border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:#fff;cursor:pointer;transition:all .18s;font-family:"Inter"}
+  .qcard:hover{border-color:#d6dcf6;box-shadow:var(--shadow-md);transform:translateY(-2px)}
+  .qcard .qemo{font-size:22px;width:46px;height:46px;border-radius:12px;background:var(--accent-wash);display:grid;place-items:center}
+  .qcard .qname{font-size:15.5px;font-weight:600;color:var(--ink)}
+  .qcard .qgo{font-size:12.5px;color:var(--accent-deep);font-weight:600;margin-top:-4px}
+
+  /* ---------- tools launcher ---------- */
+  .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .tool{display:flex;align-items:center;gap:15px;border:1px solid var(--line);border-radius:var(--radius);padding:17px 18px;background:#fff;cursor:pointer;transition:all .18s;text-align:left;font-family:"Inter";width:100%}
+  .tool:hover{border-color:#d6dcf6;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  .tool .temo{font-size:23px;width:50px;height:50px;border-radius:13px;background:var(--accent-wash);display:grid;place-items:center;flex:none}
+  .tool .tbody{flex:1;min-width:0}
+  .tool .tname{font-size:15.5px;font-weight:600;color:var(--ink)}
+  .tool .tdesc{font-size:13px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tool .tmeta{display:flex;align-items:center;gap:8px;flex:none;flex-direction:column;align-items:flex-end}
+  .tool .ttime{font-size:11px;font-weight:600;color:var(--accent-deep);background:var(--accent-wash);padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .tool .tstate{font-size:11px;color:var(--muted)}
+  .tool .tstate.ready{color:#15803d}
+
+  /* ---------- side blocks (favorites/activity/mission) ---------- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .block{border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:#fff;box-shadow:var(--shadow-sm)}
+  .block h3{font-size:17px;font-weight:600;display:flex;align-items:center;gap:9px}
+  .block .bsub{font-size:13.5px;color:var(--muted);margin-top:5px}
+  .empty{margin-top:18px;border:1px dashed var(--line-strong);border-radius:var(--radius-sm);padding:22px;text-align:center;background:var(--panel)}
+  .empty p{font-size:14px;color:var(--muted)}
+  .empty .btn{margin-top:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:"Inter";font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:11px;cursor:pointer;border:1px solid transparent;transition:all .16s}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:var(--shadow-blue)}
+  .btn-primary:hover{background:var(--accent-deep);transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+  .act-list{list-style:none;margin-top:16px;display:grid;gap:9px}
+  .act-list li{display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--ink-soft)}
+  .act-list li .adot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+  .block .btn{margin-top:18px}
+
+  .mission{border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff)}
+  .mission .mlabel{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .mission h3{margin-top:8px;font-family:"Space Grotesk";font-size:18px;line-height:1.3}
+  .mission .mtask{font-size:15px;color:var(--ink-soft);margin-top:10px}
+  .mission .mbtn{margin-top:18px;display:inline-flex;align-items:center;gap:9px;font-family:"Inter";font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:11px;cursor:pointer;border:1px solid var(--accent);color:var(--accent-deep);background:#fff;transition:all .16s}
+  .mission .mbtn:hover{background:var(--accent);color:#fff}
+  .mission.done .mbtn{background:#15803d;border-color:#15803d;color:#fff;pointer-events:none}
+  .mission.done .mcheck{display:inline-flex}
+  .mcheck{display:none;align-items:center;gap:7px;margin-top:14px;font-size:13.5px;color:#15803d;font-weight:600}
+
+  /* ---------- closing phrase ---------- */
+  .closing{text-align:center;padding:64px 0 30px}
+  .closing p{font-family:"Space Grotesk";font-weight:600;font-size:clamp(20px,3vw,27px);color:var(--ink);line-height:1.35;max-width:560px;margin:0 auto}
+  .closing p .em{color:var(--accent)}
+  footer{padding:24px 0 56px;text-align:center;color:var(--muted);font-size:13px}
+
+  /* ---------- modal (reusable) ---------- */
+  .ov{position:fixed;inset:0;z-index:90;background:rgba(11,11,15,.46);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:24px}
+  .ov.open{display:flex;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{background:#fff;width:100%;max-width:680px;border-radius:22px;max-height:86vh;overflow:auto;box-shadow:0 30px 80px rgba(11,11,15,.3);animation:slideup .3s cubic-bezier(.2,.7,.2,1)}
+  @keyframes slideup{from{transform:translateY(22px);opacity:.6}to{transform:none;opacity:1}}
+  .modal-head{position:sticky;top:0;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);padding:22px 26px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;z-index:2}
+  .modal-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .modal-head h3{font-size:21px;font-weight:600;margin-top:8px}
+  .modal-head .msub{font-size:14px;color:var(--muted);margin-top:5px;max-width:460px}
+  .x{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line-strong);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--ink-soft);transition:all .16s}
+  .x:hover{background:var(--panel-2);border-color:#cdcdd6}
+  .modal-body{padding:22px 26px 28px}
+
+  /* grid of solution cards inside modal */
+  .sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+  .scard{display:flex;align-items:center;gap:13px;text-align:left;cursor:pointer;width:100%;border:1px solid var(--line);border-radius:13px;padding:14px 15px;background:#fff;font-family:"Inter";font-weight:600;font-size:15px;color:var(--ink);transition:all .16s}
+  .scard:hover{border-color:#d6dcf6;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  .scard .semo{font-size:20px;flex:none;width:42px;height:42px;border-radius:11px;background:var(--accent-wash);display:grid;place-items:center}
+  .scard .sarrow{margin-left:auto;color:var(--muted)}
+  .back{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--accent-deep);background:none;border:none;cursor:pointer;margin-bottom:16px;padding:4px}
+  .sol h4{font-family:"Space Grotesk";font-size:20px;font-weight:600;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:11px}
+  .sol .sol-hint{font-size:15px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+  .sol .sol-mod{font-size:12px;color:var(--accent-deep);background:var(--accent-wash);padding:4px 11px;border-radius:999px;display:inline-block;margin-top:16px;font-weight:500}
+
+  /* prompt card */
+  .prompt{border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:#fff}
+  .prompt-head{display:flex;align-items:center;gap:8px;padding:9px 9px 9px 14px;background:var(--panel-2);border-bottom:1px solid var(--line)}
+  .prompt-head .label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em;text-transform:uppercase;margin-right:auto}
+  .fav-btn{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--line-strong);background:#fff;color:#a1a1aa;cursor:pointer;transition:all .16s;flex:none}
+  .fav-btn svg{fill:transparent;transition:fill .16s}
+  .fav-btn:hover{border-color:#d6dcf6;color:var(--accent)}
+  .fav-btn.faved{color:var(--accent);border-color:#dfe5ff;background:var(--accent-wash-2)}
+  .fav-btn.faved svg{fill:var(--accent)}
+  .copy-btn{display:inline-flex;align-items:center;gap:7px;font-family:"Inter";font-weight:600;font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .16s}
+  .copy-btn:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+  .copy-btn.copied{background:var(--accent);border-color:var(--accent);color:#fff}
+  .prompt pre{font-family:"JetBrains Mono",monospace;font-size:13.5px;line-height:1.72;color:#33333a;padding:16px 18px;white-space:pre-wrap;word-break:break-word;margin:0}
+
+  /* surprise */
+  .surprise-card{border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-radius:16px;padding:24px;animation:fade .25s ease}
+  .surprise-card .s-type{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .surprise-card h4{font-size:20px;font-weight:600;color:var(--ink);margin-top:8px;display:flex;gap:11px;align-items:center;line-height:1.25}
+  .surprise-card .s-body{font-size:15.5px;color:var(--ink-soft);margin-top:12px;line-height:1.6}
+  .reroll{margin-top:20px;display:inline-flex;align-items:center;gap:8px;font-family:"Inter";font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:11px;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--line-strong);transition:all .16s}
+  .reroll:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+
+  /* guide + qh shared */
+  .input-row{display:flex;gap:10px}
+  .input-row input{flex:1;font-family:"Inter";font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:11px;padding:13px 15px;outline:none;transition:border-color .16s}
+  .input-row input:focus{border-color:var(--accent)}
+  .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .chips .clabel{font-size:13px;color:var(--muted);width:100%;margin-bottom:2px}
+  .chip{font-family:"Inter";font-size:13.5px;font-weight:500;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:all .16s}
+  .chip:hover{border-color:#d6dcf6;background:var(--accent-wash-2);color:var(--accent-deep)}
+  .result{margin-top:22px}
+  .rec{border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-radius:14px;padding:20px 22px;animation:fade .25s ease}
+  .rec .reye{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .rec .rname{font-family:"Space Grotesk";font-weight:600;font-size:19px;color:var(--ink);margin-top:6px}
+  .rec .rwhy{font-size:15px;color:var(--ink-soft);margin-top:9px;line-height:1.55}
+  .rec .btn{margin-top:15px}
+
+  /* qué harías vos */
+  .qh-textarea{width:100%;min-height:120px;font-family:"Inter";font-size:15px;line-height:1.6;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:13px;padding:15px 16px;outline:none;resize:vertical;transition:border-color .16s}
+  .qh-textarea:focus{border-color:var(--accent)}
+  .qh-textarea::placeholder{color:#a1a1aa}
+  .qh-actions{margin-top:14px;display:flex;justify-content:flex-end}
+  .qh-resp{animation:fade .25s ease}
+  .qh-intro{font-size:16px;color:var(--ink);line-height:1.6}
+  .qh-block{margin-top:20px}
+  .qh-block h5{font-family:"Space Grotesk";font-size:14px;font-weight:600;color:var(--accent-deep);letter-spacing:.01em;margin-bottom:9px;text-transform:uppercase;font-size:12.5px;letter-spacing:.08em}
+  .qh-block ul{list-style:none;display:grid;gap:9px}
+  .qh-block li{display:flex;gap:10px;font-size:15px;color:var(--ink-soft);line-height:1.5}
+  .qh-block li::before{content:"›";color:var(--accent);font-weight:700;flex:none}
+  .qh-block p{font-size:15px;color:var(--ink-soft);line-height:1.6}
+  .qh-block p b{color:var(--ink)}
+  .qh-note{margin-top:22px;font-size:13.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  @media (max-width:1400px){
+    .bar-inner{
+      max-width:none;
+      width:100%;
+      padding:10px 14px;
+      gap:8px;
+    }
+    .mark{
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .nav{
+      flex:1 1 auto;
+      min-width:0;
+      justify-content:flex-end;
+      overflow:hidden;
+      gap:6px;
+    }
+    .np{
+      padding:7px 10px;
+      font-size:12.5px;
+      gap:5px;
+    }
+    #navSearch .lbl,
+    #navSurprise .lbl{
+      display:none;
+    }
+  }
+  @media (max-width:1100px){
+    #navGuide .lbl{
+      display:none;
+    }
+  }
+  @media (max-width:900px){
+    .mk-txt{display:none}
+    .np .lbl{display:none}
+    .np{padding:7px 9px}
+    .np.accent .lbl{display:inline}
+  }
+  @media (max-width:640px){
+    body{font-size:15.5px}
+    .wrap{padding:0 18px}
+    .bar-inner{padding:11px 18px}
+    .section{padding:38px 0}
+    .qgrid{grid-template-columns:repeat(2,1fr)}
+    .tgrid{grid-template-columns:1fr}
+    .cols{grid-template-columns:1fr}
+    .sgrid{grid-template-columns:1fr}
+    .ov{padding:0;align-items:flex-end}
+    .modal{border-radius:22px 22px 0 0;max-height:92vh}
+    .bigsearch-box{padding:15px 17px}
+    .bigsearch-box input{font-size:16px}
+    .tool .tdesc{white-space:normal}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-inner">
+    <a class="mark" href="#top"><span class="glyph">IA</span><span class="mk-txt">Tu Primer Empleado IA</span></a>
+    <nav class="nav">
+      <a class="np" href="Empeza-por-Aca.html">🚀 <span class="lbl">Empezá por Acá</span></a>
+      <button class="np accent" id="navQh">🎩 <span class="lbl">Pensémoslo juntos</span></button>
+      <button class="np" id="navGuide">🧭 <span class="lbl">¿Por dónde empiezo?</span></button>
+      <button class="np" id="navSearch">🔍 <span class="lbl">Buscar</span></button>
+      <button class="np" id="navSurprise">✨ <span class="lbl">Sorprendeme</span></button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <h1>¿Qué necesitás resolver hoy?</h1>
+      <p class="sub">Elegí un problema. Tu equipo IA te ayuda a resolverlo.</p>
+      <div class="bigsearch">
+        <div class="bigsearch-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>
+          <input id="globalSearch" type="text" placeholder="Ej: responder un cliente enojado..." autocomplete="off" aria-label="Buscar una solución">
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="hero-qh" id="heroQh">🎩 Pensémoslo juntos — Pensá una situación con tu socio estratégico</button>
+    </div>
+  </section>
+
+  <!-- QUICK ACCESS -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="shead"><h2>Acceso rápido</h2><span class="hint">Tocá un problema y resolvelo ahora</span></div>
+      <div class="qgrid" id="qgrid"></div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="shead"><h2>Mis herramientas</h2><span class="hint">Tu equipo IA, siempre disponible</span></div>
+      <div class="tgrid" id="tgrid"></div>
+    </div>
+  </section>
+
+  <!-- FAV + ACTIVITY -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="cols">
+        <div class="block">
+          <h3>⭐ Tus favoritos</h3>
+          <p class="bsub">Tus conversaciones más usadas, siempre a mano.</p>
+          <div class="empty">
+            <p>Todavía no guardaste ninguna conversación.</p>
+            <button class="btn btn-primary" id="favExplore">Explorar conversaciones</button>
+          </div>
+        </div>
+        <div class="block">
+          <h3>📈 Actividad del día</h3>
+          <p class="bsub">Hoy podrías ahorrar tiempo haciendo:</p>
+          <ul class="act-list">
+            <li><span class="adot"></span>Mejorar un mensaje real</li>
+            <li><span class="adot"></span>Crear una publicación</li>
+            <li><span class="adot"></span>Planificar tu semana</li>
+          </ul>
+          <button class="btn btn-ghost" id="actStart">Empezar ahora →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="block mission" id="mission">
+        <span class="mlabel">🚀 Misión del día</span>
+        <h3>Una acción simple para hoy</h3>
+        <p class="mtask">Pedile a la IA que mejore un mensaje real que escribiste hoy. Compará el antes y el después.</p>
+        <button class="mbtn" id="missionBtn">Marcar como completada</button>
+        <span class="mcheck"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>¡Misión completada! Volvé mañana por la próxima.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <div class="wrap reveal">
+      <p>La inteligencia artificial no reemplaza tu criterio.<br><span class="em">Lo potencia.</span></p>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">Tu Primer Empleado IA — tu sistema de trabajo con IA.</div></footer>
+
+<!-- REUSABLE MODAL -->
+<div class="ov" id="ov" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <span class="modal-eyebrow" id="ovEyebrow"></span>
+        <h3 id="ovTitle"></h3>
+        <p class="msub" id="ovSub"></p>
+      </div>
+      <button class="x" id="ovClose" aria-label="Cerrar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body" id="ovBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ===== data ===== */
+  var copyHead='<div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>';
+  function promptCard(text){ return '<div class="prompt">'+copyHead+'<pre>'+text+'</pre></div>'; }
+
+  var TASKS={
+    clientes:{emo:'💬',title:'Responder un cliente difícil',hint:'Respirá. Copiá esto, pegá el mensaje del cliente y mandalo.',mod:'Módulo 2 — El Asistente Comercial',prompt:'Actuá como responsable de atención al cliente, con calma y empatía. Un cliente me escribió esto y necesito responderle bien:\n\n[PEGÁ EL MENSAJE DEL CLIENTE]\n\nEscribí una respuesta que reconozca su situación, no discuta ni presione, y proponga un paso concreto para resolverlo.'},
+    contenido:{emo:'📱',title:'Crear contenido',hint:'Sin pensar una hora qué subir. Completá tu rubro y listo.',mod:'Módulo 3 — El Community Manager',prompt:'Tengo un negocio de [DESCRIBILO]. Escribí una publicación para Instagram con tono cercano que despierte interés en lo que ofrezco sin sonar agresiva, y terminá invitando a escribir por mensaje privado.'},
+    emails:{emo:'📧',title:'Escribir un email',hint:'Decile de qué se trata y te lo deja listo, con asunto incluido.',mod:'Módulo 4 — Biblioteca Maestra',prompt:'Ayudame a escribir un email claro, cordial y profesional sobre este tema: [DESCRIBILO]. Que transmita confianza y termine con una invitación a responder. Dame el asunto y el cuerpo.'},
+    vender:{emo:'💰',title:'Vender más',hint:'Una promo clara para mover tus ventas esta semana.',mod:'Módulo 6 — El Creador de Dinero',prompt:'Actuá como especialista en marketing de respuesta directa. Diseñá una promoción para aumentar las ventas de mi negocio: [DESCRIBILO]. Incluí un titular atractivo, una oferta clara, sensación de urgencia y un llamado a la acción.'},
+    semana:{emo:'📋',title:'Organizar mi semana',hint:'Pegá tu lista caótica y salí con lo que importa.',mod:'Módulo 5 — El Director General',prompt:'Estas son todas mis tareas pendientes:\n\n[PEGALAS ACÁ]\n\nOrdenalas por impacto y urgencia, y armame un plan para la semana con las 3 prioridades de cada día.'},
+    decisiones:{emo:'🧠',title:'Tomar una decisión',hint:'Una segunda opinión inteligente antes de decidir.',mod:'Módulo 7 — El Coach Personal',prompt:'Tengo que tomar esta decisión: [DESCRIBILA]. Actuá como un asesor estratégico: compará ventajas, riesgos y consecuencias de cada opción, y decime qué preguntas debería hacerme antes de decidir.'},
+    oferta:{emo:'🚀',title:'Crear una oferta',hint:'Una oferta difícil de rechazar, armada en un minuto.',mod:'Módulo 6 — El Creador de Dinero',prompt:'Actuá como especialista en marketing de respuesta directa. Diseñá una oferta difícil de rechazar para esto: [TU PRODUCTO O SERVICIO]. Incluí un beneficio claro, un bono, reducción del riesgo, algo de urgencia y un llamado a la acción.'},
+    ideas:{emo:'💡',title:'Generar ideas',hint:'Cuando te quedaste en blanco, esto te destraba.',mod:'Módulo 6 — El Creador de Dinero',prompt:'Tengo un negocio de [DESCRIBILO]. Dame 10 ideas concretas para [CONSEGUIR MÁS CLIENTES / CREAR CONTENIDO / GENERAR INGRESOS EXTRA]. Ordenalas de la más fácil de aplicar a la más ambiciosa.'},
+    prompt:{emo:'🤖',title:'No sé qué pedirle a la IA',hint:'Dejá que la IA te ayude a armar tu propio pedido.',mod:'Módulo 1 — El Cerebro',prompt:'Quiero lograr un objetivo pero todavía no sé cómo formular mi pedido.\n\nActuá como un consultor experto. Haceme todas las preguntas necesarias para entender mi situación y ayudame a convertir mi idea en un prompt claro, completo y efectivo.'}
+  };
+
+  var QUICK=[
+    ['clientes','💬','Responder clientes'],['contenido','📱','Crear contenido'],
+    ['emails','📧','Escribir emails'],['vender','💰','Vender más'],
+    ['semana','📋','Organizar mi semana'],['decisiones','🧠','Tomar decisiones'],
+    ['oferta','🚀','Crear una oferta'],['ideas','💡','Generar ideas']
+  ];
+
+  var TOOLS=[
+    {emo:'🚀',name:'Empezá por Acá',desc:'Bienvenida y tu primera victoria',time:'10 min',state:'Abrir',ready:true,link:'Empeza-por-Aca.html'},
+    {emo:'🧠',name:'El Cerebro',desc:'Aprendé a pedirle bien a la IA',time:'20 min',state:'Empezá acá',ready:true,link:'Modulo-1-El-Cerebro.html'},
+    {emo:'💬',name:'El Asistente Comercial',desc:'Clientes, presupuestos y seguimientos',time:'15 min',state:'Abrir',link:'Modulo-2-Asistente-Comercial.html'},
+    {emo:'📱',name:'El Community Manager',desc:'Contenido para redes sin bloqueo',time:'18 min',state:'Abrir',link:'Modulo-3-Community-Manager.html'},
+    {emo:'📚',name:'Biblioteca Maestra',desc:'Los mensajes difíciles, resueltos',time:'20 min',state:'Abrir',link:'Modulo-4-Biblioteca-Maestra.html'},
+    {emo:'🏢',name:'El Director General IA',desc:'Ordenar, priorizar y decidir',time:'15 min',state:'Abrir',link:'Modulo-5-Director-General.html'},
+    {emo:'💰',name:'El Creador de Dinero IA',desc:'Ideas, ofertas y precios',time:'20 min',state:'Abrir',link:'Modulo-6-Creador-de-Dinero.html'},
+    {emo:'🎯',name:'El Coach Personal IA',desc:'Decisiones, foco y hábitos',time:'15 min',state:'Abrir',link:'Modulo-7-Coach-Personal.html'},
+    {emo:'🗓️',name:'Libro de Misiones · 21 Días',desc:'Volvé la IA un hábito diario',time:'21 días',state:'Abrir',link:'Libro-de-Misiones-21-Dias.html'},
+    {emo:'⭐',name:'100 Prompts Legendarios',desc:'Tu caja de herramientas rápida',time:'consulta',state:'Abrir',link:'Biblioteca-100-Prompts.html'}
+  ];
+
+  var MODS={
+    m1:{n:'Módulo 1 — El Cerebro',why:'Aprendés a pedirle bien a la IA. Es la base de todo.'},
+    m2:{n:'Módulo 2 — El Asistente Comercial',why:'Clientes, presupuestos, seguimientos y objeción de precio.'},
+    m3:{n:'Módulo 3 — El Community Manager',why:'Ideas y publicaciones listas para redes.'},
+    m4:{n:'Módulo 4 — Biblioteca Maestra',why:'Los mensajes difíciles, resueltos.'},
+    m5:{n:'Módulo 5 — El Director General IA',why:'Ordenar tareas, priorizar y decidir.'},
+    m6:{n:'Módulo 6 — El Creador de Dinero IA',why:'Ideas, ofertas, precios y nuevos ingresos.'},
+    m7:{n:'Módulo 7 — El Coach Personal IA',why:'Decisiones, foco, hábitos y conversaciones importantes.'}
+  };
+  var RULES=[
+    {m:'m3',k:['public','post','instagram','facebook','reel','contenido','redes','historia']},
+    {m:'m2',k:['cliente','responder','consulta','presupuesto','vender','venta','precio','caro','reclamo','queja','cobrar cliente']},
+    {m:'m4',k:['email','correo','cobrar','factura','pago','disculp','malentendido','propuesta','whatsapp','aclarar','conversación difícil','conversacion dificil']},
+    {m:'m5',k:['organiz','semana','día','dia','agenda','prioridad','tarea','planific','foco','caos']},
+    {m:'m6',k:['idea','negocio','oferta','monetiz','ingreso','producto','lanzar','lanzamiento','dinero','cobrar','cuánto cobrar','cuanto cobrar','precio']},
+    {m:'m7',k:['decisión','decision','decidir','dos decisiones','entre dos','hábito','habito','motivación','bloqueo','aprender','estancad']},
+    {m:'m1',k:['no sé','no se','empezar','prompt','pedir']}
+  ];
+  function recommend(t){ t=(t||'').toLowerCase(); for(var i=0;i<RULES.length;i++){for(var j=0;j<RULES[i].k.length;j++){if(t.indexOf(RULES[i].k[j])!==-1)return RULES[i].m;}} return 'm1'; }
+
+  var SEARCH_INDEX=[
+    {emo:'💬',tit:'Responder un cliente enojado',sub:'Respuesta empática, sin discutir',mod:'Módulo 2',task:'clientes',tags:['cliente','enojado','reclamo','queja','responder']},
+    {emo:'💸',tit:'Manejar la objeción de precio',sub:'Pasar de precio a valor',mod:'Módulo 2',task:'clientes',tags:['precio','caro','barato','descuento']},
+    {emo:'📲',tit:'Responder por WhatsApp',sub:'Mensajes y seguimientos',mod:'Módulo 2',task:'clientes',tags:['whatsapp','mensaje','seguimiento']},
+    {emo:'📱',tit:'Crear contenido para Instagram',sub:'Posts, reels e ideas',mod:'Módulo 3',task:'contenido',tags:['instagram','contenido','post','reel','publicar','redes','facebook']},
+    {emo:'🗂️',tit:'Organizar mi semana',sub:'Priorizar tareas y foco',mod:'Módulo 5',task:'semana',tags:['organizar','semana','dia','día','tareas','prioridad','agenda','planificar']},
+    {emo:'💰',tit:'Vender más',sub:'Ofertas y promociones',mod:'Módulo 6',task:'vender',tags:['vender','venta','oferta','promocion','ingresos','dinero']},
+    {emo:'📧',tit:'Escribir un email',sub:'Claro, cordial y profesional',mod:'Módulo 4',task:'emails',tags:['email','correo','mail','propuesta','cobrar','disculpa']},
+    {emo:'💡',tit:'Convertir una idea en producto',sub:'Validar y bajar a tierra',mod:'Módulo 6',task:'ideas',tags:['idea','producto','negocio','lanzar','monetizar']},
+    {emo:'🧠',tit:'Tomar una decisión',sub:'Comparar opciones con criterio',mod:'Módulo 7',task:'decisiones',tags:['decisión','decision','decidir','opciones','dudo']},
+    {emo:'✍️',tit:'Aprender a pedirle a la IA',sub:'La base del sistema',mod:'Módulo 1',task:'prompt',tags:['prompt','pedir','empezar','no sé','no se']}
+  ];
+
+  var SURPRISES=[
+    {type:'Prompt útil',emo:'💬',title:'Convertí características en beneficios',body:'Lo que vendés suena mejor cuando hablás de lo que el cliente gana.',prompt:'Tomá estas características de mi producto: [PEGALAS] y transformalas en beneficios concretos y atractivos para mi cliente ideal.'},
+    {type:'Misión rápida',emo:'🎯',title:'La misión de hoy (5 minutos)',body:'Copiá un mensaje que mandaste esta semana y pedile a la IA que lo deje más claro, cercano y profesional.'},
+    {type:'Idea para vender más',emo:'💰',title:'Armá un combo',body:'Juntá tu producto principal con un extra de bajo costo pero alto valor percibido. Subís el ticket sin bajar el precio.'},
+    {type:'Ahorrá tiempo',emo:'⏱️',title:'Tus 3 respuestas de siempre',body:'Guardá las 3 respuestas que más repetís como “respuestas rápidas” en WhatsApp Business. No las escribís nunca más.'},
+    {type:'Prompt útil',emo:'📱',title:'30 ideas de contenido',body:'Para no quedarte nunca sin qué publicar.',prompt:'Dame 30 ideas de contenido para mi negocio de [RUBRO], combinando publicaciones educativas, emocionales y de venta.'},
+    {type:'Idea',emo:'💡',title:'Nuevas fuentes de ingreso',body:'Pedile a la IA 10 formas distintas de generar ingresos con lo que ya sabés hacer.'},
+    {type:'Acción simple',emo:'⚡',title:'Automatizá una tarea repetitiva',body:'Elegí algo que hacés cada semana y armá una conversación reutilizable para acelerarlo.'},
+    {type:'Prompt útil',emo:'🤝',title:'Cuando dicen “es caro”',body:'Una respuesta que cambia precio por valor.',prompt:'Escribí una respuesta empática para un cliente que dice que mi precio es caro, sin discutir ni presionar. Reforzá el valor y cerrá invitando a seguir conversando.'},
+    {type:'Idea para vender más',emo:'🔁',title:'Reactivá clientes viejos',body:'Mandá hoy un mensaje cordial a 5 personas que no te compran hace meses.'}
+  ];
+
+  /* ===== render static grids ===== */
+  document.getElementById('qgrid').innerHTML=QUICK.map(function(q){
+    return '<button class="qcard" data-task="'+q[0]+'"><span class="qemo">'+q[1]+'</span><span class="qname">'+q[2]+'</span><span class="qgo">Resolver ahora →</span></button>';
+  }).join('');
+  document.getElementById('tgrid').innerHTML=TOOLS.map(function(t,i){
+    var attr = t.link ? 'data-link="'+t.link+'"' : 'data-task="'+t.task+'"';
+    return '<button class="tool" '+attr+'><span class="temo">'+t.emo+'</span><span class="tbody"><span class="tname">'+t.name+'</span><span class="tdesc">'+t.desc+'</span></span><span class="tmeta"><span class="ttime">'+t.time+'</span><span class="tstate'+(t.ready?' ready':'')+'">'+t.state+'</span></span></button>';
+  }).join('');
+
+  /* ===== modal helpers ===== */
+  var ov=document.getElementById('ov'),ovBody=document.getElementById('ovBody'),ovTitle=document.getElementById('ovTitle'),ovSub=document.getElementById('ovSub'),ovEye=document.getElementById('ovEyebrow');
+  function openModal(eye,title,sub,html){ ovEye.textContent=eye; ovTitle.textContent=title; ovSub.textContent=sub; ovBody.innerHTML=html; ov.classList.add('open'); document.body.style.overflow='hidden'; }
+  function setBody(html){ ovBody.innerHTML=html; }
+  function closeModal(){ ov.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('ovClose').addEventListener('click',closeModal);
+  ov.addEventListener('click',function(e){ if(e.target===ov) closeModal(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&ov.classList.contains('open')) closeModal(); });
+
+  /* ===== solution view ===== */
+  function showSolution(key){
+    var t=TASKS[key]; if(!t) return;
+    openModal('Solución lista','Resolvelo ahora','Copiá el mensaje y pegalo en tu IA.',
+      '<div class="sol"><h4>'+t.emo+' '+t.title+'</h4><p class="sol-hint">'+t.hint+'</p>'+promptCard(t.prompt)+'<span class="sol-mod">'+t.mod+'</span></div>');
+  }
+
+  /* ===== resolución rápida (grid) ===== */
+  function showResol(){
+    var grid='<div class="sgrid">'+Object.keys(TASKS).map(function(k){
+      return '<button class="scard" data-sol="'+k+'"><span class="semo">'+TASKS[k].emo+'</span>'+TASKS[k].title+'<span class="sarrow">→</span></button>';
+    }).join('')+'</div>';
+    openModal('⚡ Resolución rápida','¿Qué necesitás resolver?','Elegí tu situación y te doy el mensaje exacto.',grid);
+  }
+
+  /* ===== guide ===== */
+  function showGuide(){
+    var chips=['Tengo que responder un cliente.','Necesito vender más.','No sé qué publicar.','Quiero organizar mi semana.','Tengo una idea pero no sé cómo bajarla a tierra.'];
+    openModal('🧭 Tu guía','¿Por dónde empiezo?','Escribí en una línea qué necesitás y te digo qué abrir.',
+      '<div class="input-row"><input id="gIn" placeholder="Ej: tengo que responder un cliente enojado" autocomplete="off"><button class="btn btn-primary" id="gGo">Recomendarme</button></div>'+
+      '<div class="chips"><span class="clabel">O tocá un ejemplo:</span>'+chips.map(function(c){return '<button class="chip" data-ex="'+c+'">'+c+'</button>';}).join('')+'</div>'+
+      '<div class="result" id="gRes"></div>');
+    var inp=document.getElementById('gIn');
+    function rec(text){ var m=recommend(text),d=MODS[m];
+      document.getElementById('gRes').innerHTML='<div class="rec"><span class="reye">Te recomiendo abrir</span><div class="rname">'+d.n+'</div><p class="rwhy">'+d.why+'</p><button class="btn btn-primary" id="gP">⚡ Abrir Resolución rápida</button></div>';
+      document.getElementById('gP').addEventListener('click',showResol);
+    }
+    document.getElementById('gGo').addEventListener('click',function(){ var v=inp.value.trim(); if(!v){document.getElementById('gRes').innerHTML='<p style="color:#c0392b;font-size:14px">Escribí una línea o tocá un ejemplo.</p>';return;} rec(v); });
+    inp.addEventListener('keydown',function(e){ if(e.key==='Enter')document.getElementById('gGo').click(); });
+    document.querySelectorAll('#ovBody .chip').forEach(function(c){ c.addEventListener('click',function(){ inp.value=c.getAttribute('data-ex'); rec(c.getAttribute('data-ex')); }); });
+    setTimeout(function(){ inp.focus(); },120);
+  }
+
+  /* ===== surprise ===== */
+  var lastSu=-1;
+  function suHtml(){
+    var i=Math.floor(Math.random()*SURPRISES.length); if(SURPRISES.length>1){while(i===lastSu)i=Math.floor(Math.random()*SURPRISES.length);} lastSu=i;
+    var s=SURPRISES[i];
+    var h='<div class="surprise-card"><span class="s-type">'+s.type+'</span><h4>'+s.emo+' '+s.title+'</h4><p class="s-body">'+s.body+'</p>'+(s.prompt?('<div style="margin-top:16px">'+promptCard(s.prompt)+'</div>'):'')+'</div><button class="reroll" id="suMore">✨ Otra sorpresa</button>';
+    return h;
+  }
+  function showSurprise(){ openModal('✨ Sorprendeme','Tu chispa de hoy','Una idea, un prompt o una acción rápida para arrancar.',suHtml()); }
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('#suMore')) setBody(suHtml()); });
+
+  /* ===== qué harías vos ===== */
+  function showQh(){
+    var chips=['Un cliente está enojado.','No sé cuánto cobrar.','Tengo una idea de negocio.','No sé qué publicar hoy.','Necesito organizar mi semana.','Estoy entre dos decisiones.','Quiero lanzar un producto digital.','Tengo una conversación difícil pendiente.'];
+    openModal('🎩 Pensémoslo juntos','Contame el contexto.','Como si hablaras con un compañero de trabajo. No hace falta que escribas perfecto.',
+      '<p style="font-size:15px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px">Explicame qué está pasando, qué querés lograr y cuáles son tus dudas. Vamos a ordenar la situación y a pensar posibles caminos antes de actuar.</p>'+
+      '<textarea class="qh-textarea" id="qhIn" placeholder="Ejemplo: Tengo un cliente importante enojado, no sé cómo responderle y no quiero perder la cuenta."></textarea>'+
+      '<div class="qh-actions"><button class="btn btn-primary" id="qhGo">Pensar juntos →</button></div>'+
+      '<div class="chips"><span class="clabel">O empezá por una situación típica:</span>'+chips.map(function(c){return '<button class="chip" data-ex="'+c+'">'+c+'</button>';}).join('')+'</div>'+
+      '<div class="result" id="qhRes"></div>');
+    var inp=document.getElementById('qhIn');
+    function think(text){
+      var m=recommend(text),d=MODS[m];
+      var safe=text.replace(/</g,'&lt;');
+      var html='<div class="qh-resp">'+
+        '<p class="qh-intro">Buenísimo que lo pienses antes de actuar. Vamos a ordenarlo juntos. 👇</p>'+
+        '<div class="qh-block"><h5>Antes de avanzar, respondete esto</h5><ul>'+
+          '<li>¿Qué resultado concreto querés conseguir con esto?</li>'+
+          '<li>¿Qué es lo que más te preocupa que pase?</li>'+
+          '<li>¿Qué opciones ya pensaste y por qué dudás entre ellas?</li>'+
+        '</ul></div>'+
+        '<div class="qh-block"><h5>Por dónde empezar en tu sistema</h5><p>Para una situación así, tu mejor punto de partida es <b>'+d.n+'</b>. '+d.why+'</p></div>'+
+        '<div class="qh-block"><h5>Llevá esto a tu IA ahora</h5>'+promptCard('Quiero pensar esta situación con vos, como si fueras mi socio estratégico:\n\n"'+ (safe||'[CONTAME TU SITUACIÓN]') +'"\n\nHaceme las preguntas que falten para entenderla bien, ordená el problema y proponeme 2 o 3 caminos posibles con sus pros y contras antes de que decida.')+'</div>'+
+        '<p class="qh-note">Este espacio está pensado para acompañarte a ordenar la cabeza en cualquier desafío, no para darte una respuesta automática. Cuando conectes tu IA, vas a poder desarrollar la conversación completa partiendo de acá.</p>'+
+      '</div>';
+      document.getElementById('qhRes').innerHTML=html;
+      document.getElementById('qhRes').scrollIntoView({block:'nearest',behavior:'smooth'});
+    }
+    document.getElementById('qhGo').addEventListener('click',function(){ var v=inp.value.trim(); if(!v){ inp.focus(); inp.style.borderColor='#c0392b'; setTimeout(function(){inp.style.borderColor='';},1200); return;} think(v); });
+    document.querySelectorAll('#ovBody .chip').forEach(function(c){ c.addEventListener('click',function(){ inp.value=c.getAttribute('data-ex'); think(c.getAttribute('data-ex')); }); });
+    setTimeout(function(){ inp.focus(); },120);
+  }
+
+  /* ===== global search ===== */
+  var sInput=document.getElementById('globalSearch'),sResults=document.getElementById('searchResults');
+  function sMatch(q){ q=q.trim().toLowerCase(); if(!q)return[]; return SEARCH_INDEX.filter(function(it){ if(it.tit.toLowerCase().indexOf(q)!==-1)return true; if(it.sub.toLowerCase().indexOf(q)!==-1)return true; for(var i=0;i<it.tags.length;i++){if(it.tags[i].indexOf(q)!==-1||q.indexOf(it.tags[i])!==-1)return true;} return false; }).slice(0,6); }
+  function renderS(q){ if(!q.trim()){sResults.classList.remove('show');sResults.innerHTML='';return;} var r=sMatch(q); if(!r.length){sResults.innerHTML='<div class="sr-empty">Probá con: cliente, precio, Instagram, organizar, idea, decisión…</div>';sResults.classList.add('show');return;}
+    sResults.innerHTML=r.map(function(it){return '<button class="sr" data-sol="'+it.task+'"><span class="sr-emo">'+it.emo+'</span><span><span class="sr-tit">'+it.tit+'</span><span class="sr-sub">'+it.sub+'</span></span><span class="sr-mod">'+it.mod+' →</span></button>';}).join('');
+    sResults.classList.add('show');
+  }
+  sInput.addEventListener('input',function(){ renderS(sInput.value); });
+  sInput.addEventListener('focus',function(){ if(sInput.value.trim())renderS(sInput.value); });
+
+  /* ===== global click delegation ===== */
+  document.addEventListener('click',function(e){
+    var el=e.target.closest?e.target:null; if(!el)return;
+    var copyBtn=e.target.closest('[data-copy]');
+    if(copyBtn){ var pre=copyBtn.closest('.prompt').querySelector('pre'),txt=pre.innerText;
+      var done=function(){copyBtn.classList.add('copied');var sp=copyBtn.querySelector('span'),pv=sp.textContent;sp.textContent='¡Copiado!';setTimeout(function(){copyBtn.classList.remove('copied');sp.textContent=pv;},1800);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){fb(txt,done);});}else{fb(txt,done);} return; }
+    var fav=e.target.closest('.fav-btn'); if(fav){ fav.classList.toggle('faved'); return; }
+    var sol=e.target.closest('[data-sol]'); if(sol){ showSolution(sol.getAttribute('data-sol')); return; }
+    var qc=e.target.closest('[data-task]'); if(qc){ showSolution(qc.getAttribute('data-task')); return; }
+    var lk=e.target.closest('[data-link]'); if(lk){ window.location.href=lk.getAttribute('data-link'); return; }
+    if(!e.target.closest('.bigsearch')) sResults.classList.remove('show');
+    var row=e.target.closest('.sr'); if(row&&row.getAttribute('data-sol')){ sResults.classList.remove('show'); sInput.blur(); showSolution(row.getAttribute('data-sol')); }
+  });
+  function fb(text,cb){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');cb();}catch(e){}document.body.removeChild(ta);}
+
+  /* ===== nav + buttons ===== */
+  document.getElementById('navQh').addEventListener('click',showQh);
+  document.getElementById('heroQh').addEventListener('click',showQh);
+  document.getElementById('navGuide').addEventListener('click',showGuide);
+  document.getElementById('navSurprise').addEventListener('click',showSurprise);
+  document.getElementById('navSearch').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); setTimeout(function(){sInput.focus();},250); });
+  document.getElementById('favExplore').addEventListener('click',showResol);
+  document.getElementById('actStart').addEventListener('click',showResol);
+
+  /* ===== mission ===== */
+  var mission=document.getElementById('mission'),mBtn=document.getElementById('missionBtn');
+  mBtn.addEventListener('click',function(){ mission.classList.add('done'); mBtn.textContent='✓ Completada'; });
+
+  /* ===== reveal ===== */
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empezá por Acá — Tu Primer Empleado IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --panel:#fafbfc;
+    --panel-2:#f5f6f8;
+    --ink:#0b0b0f;
+    --ink-soft:#3f3f46;
+    --muted:#71717a;
+    --line:#ececef;
+    --line-strong:#e2e2e8;
+    --accent:#2354f7;
+    --accent-deep:#1b41c7;
+    --accent-wash:#eef2ff;
+    --accent-wash-2:#f4f6ff;
+    --radius:16px;
+    --radius-sm:11px;
+    --maxw:740px;
+    --shadow-sm:0 1px 2px rgba(11,11,15,.04), 0 1px 1px rgba(11,11,15,.03);
+    --shadow-md:0 8px 30px rgba(11,11,15,.06), 0 2px 6px rgba(11,11,15,.04);
+    --shadow-blue:0 12px 34px rgba(35,84,247,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink-soft);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3,.display{font-family:"Space Grotesk",sans-serif;color:var(--ink);letter-spacing:-.02em;line-height:1.12}
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .section{padding:74px 0}
+  .section + .section{border-top:1px solid var(--line)}
+
+  /* ---------- top bar ---------- */
+  header.bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{max-width:var(--maxw);margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .mark{display:flex;align-items:center;gap:8px;font-family:"Space Grotesk";font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-.01em;white-space:nowrap;flex:none}
+  .mark .glyph{width:24px;height:24px;border-radius:7px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+  .pill{font-size:12.5px;font-weight:500;color:var(--accent-deep);background:var(--accent-wash);border:1px solid #dfe5ff;padding:5px 11px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(35,84,247,.18)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:96px 0 78px;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:-200px 0 auto 0;height:520px;z-index:-1;
+    background:radial-gradient(620px 320px at 50% 0%, rgba(35,84,247,.07), rgba(35,84,247,0) 70%);
+  }
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep)}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  h1{font-size:clamp(40px,7vw,62px);font-weight:700;margin:22px 0 0}
+  h1 .em{color:var(--accent)}
+  .lede{font-size:clamp(18px,2.4vw,21px);color:var(--ink-soft);margin-top:22px;max-width:560px}
+  .lede strong{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-family:"Inter";font-weight:600;font-size:15.5px;
+    padding:13px 22px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:var(--shadow-blue)}
+  .btn-primary:hover{background:var(--accent-deep);transform:translateY(-1px)}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line-strong);box-shadow:var(--shadow-sm)}
+  .btn-ghost:hover{border-color:#cdcdd6;transform:translateY(-1px)}
+  .btn .arrow{transition:transform .2s ease}
+  .btn:hover .arrow{transform:translateX(3px)}
+
+  .reassure{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:14.5px;color:var(--muted)}
+  .reassure svg{flex:none}
+
+  /* ---------- section heading ---------- */
+  .kicker{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:14px}
+  h2{font-size:clamp(28px,4.2vw,36px);font-weight:600}
+  .sub{font-size:17px;color:var(--muted);margin-top:14px;max-width:560px}
+
+  /* ---------- reframe ---------- */
+  .reframe{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:34px 32px;display:grid;gap:18px;box-shadow:var(--shadow-sm)}
+  .reframe .quote{font-family:"Space Grotesk";font-weight:600;font-size:clamp(20px,3vw,25px);color:var(--ink);line-height:1.3}
+  .reframe .quote .strike{color:var(--muted);text-decoration:line-through;text-decoration-color:#cdcdd6}
+  .reframe p{font-size:16px;color:var(--ink-soft)}
+
+  /* ---------- module map ---------- */
+  .map{display:grid;gap:10px;margin-top:34px}
+  .mod{
+    display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;
+    padding:17px 19px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;
+    transition:border-color .18s ease, box-shadow .2s ease, transform .18s ease;
+  }
+  .mod:hover{border-color:#d6dcf6;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  .mod .idx{
+    font-family:"Space Grotesk";font-weight:600;font-size:13px;color:var(--accent-deep);
+    width:34px;height:34px;border-radius:9px;background:var(--accent-wash);display:grid;place-items:center;flex:none;letter-spacing:0
+  }
+  .mod .body h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+  .mod .body p{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.5}
+  .mod .tag{font-size:11.5px;font-weight:500;color:var(--muted);white-space:nowrap;align-self:start;margin-top:3px}
+  .mod.alt .idx{background:#f1f1f4;color:var(--ink-soft)}
+
+  /* ---------- quick win (signature) ---------- */
+  .win{
+    margin-top:8px;border:1px solid var(--line-strong);border-radius:22px;overflow:hidden;
+    background:linear-gradient(180deg,#fff, #fcfdff);box-shadow:var(--shadow-md);
+  }
+  .win-top{padding:30px 30px 26px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--accent-wash-2),#fff)}
+  .win-top .row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+  .win-top h3{font-size:23px;font-weight:600}
+  .win-top .meta{font-size:14px;color:var(--muted);margin-top:8px;max-width:460px}
+  .progress-wrap{min-width:148px;flex:none}
+  .progress-label{font-size:12.5px;font-weight:600;color:var(--accent-deep);text-align:right;margin-bottom:7px}
+  .progress{height:7px;border-radius:999px;background:#e7eaf6;overflow:hidden}
+  .progress > span{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--accent),#5a7bff);transition:width .45s cubic-bezier(.2,.7,.2,1)}
+
+  .steps{padding:8px 8px 14px}
+  .step{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px;border-radius:14px;transition:background .2s ease}
+  .step:not(:last-child){border-bottom:1px solid var(--line)}
+  .step:hover{background:#fafbff}
+  .check{
+    width:30px;height:30px;border-radius:50%;border:2px solid var(--line-strong);background:#fff;
+    display:grid;place-items:center;cursor:pointer;flex:none;margin-top:2px;transition:all .18s ease;color:#fff
+  }
+  .check svg{opacity:0;transform:scale(.6);transition:all .18s ease}
+  .step.done .check{background:var(--accent);border-color:var(--accent)}
+  .step.done .check svg{opacity:1;transform:scale(1)}
+  .step.done .step-title{color:var(--muted)}
+  .step-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .step-title{font-family:"Space Grotesk";font-weight:600;font-size:17px;color:var(--ink);letter-spacing:-.01em;transition:color .2s ease}
+  .step-time{font-size:12px;font-weight:500;color:var(--accent-deep);background:var(--accent-wash);padding:2px 9px;border-radius:999px}
+  .step p{font-size:15px;color:var(--ink-soft);margin-top:7px}
+
+  /* prompt card */
+  .prompt{margin-top:14px;border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:#fff}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;padding:9px 9px 9px 14px;background:var(--panel-2);border-bottom:1px solid var(--line)}
+  .prompt-head .label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
+  .prompt-head .label svg{color:var(--accent)}
+  .copy-btn{
+    display:inline-flex;align-items:center;gap:7px;font-family:"Inter";font-weight:600;font-size:13px;color:var(--ink);
+    background:#fff;border:1px solid var(--line-strong);border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .16s ease
+  }
+  .copy-btn:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+  .copy-btn.copied{background:var(--accent);border-color:var(--accent);color:#fff}
+  .copy-btn svg{flex:none}
+  .prompt pre{
+    font-family:"JetBrains Mono",monospace;font-size:13.5px;line-height:1.72;color:#33333a;
+    padding:16px 18px;white-space:pre-wrap;word-break:break-word;margin:0
+  }
+  .prompt pre .br{color:var(--accent-deep);font-weight:500;background:var(--accent-wash);padding:1px 5px;border-radius:5px}
+
+  .win-done{
+    margin:0 18px 18px;padding:18px 20px;border-radius:14px;background:var(--accent-wash);border:1px solid #dfe5ff;
+    display:none;align-items:center;gap:14px
+  }
+  .win-done.show{display:flex;animation:pop .4s ease}
+  .win-done .tick{width:34px;height:34px;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+  .win-done p{font-size:14.5px;color:var(--ink)}
+  .win-done strong{color:var(--accent-deep)}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- formula ---------- */
+  .formula{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:34px}
+  .f-card{border:1px solid var(--line);border-radius:var(--radius-sm);padding:20px;background:#fff;transition:border-color .18s,box-shadow .2s}
+  .f-card:hover{border-color:#d6dcf6;box-shadow:var(--shadow-sm)}
+  .f-card .n{font-family:"Space Grotesk";font-weight:600;font-size:13px;color:var(--accent);letter-spacing:.04em}
+  .f-card h3{font-size:17px;font-weight:600;margin-top:6px}
+  .f-card p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.55}
+  .formula-note{margin-top:18px;font-size:14.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:15px 18px}
+  .formula-note b{color:var(--ink)}
+
+  /* ---------- next step ---------- */
+  .next{
+    text-align:center;background:var(--ink);color:#fff;border-radius:22px;padding:54px 32px;
+    background-image:radial-gradient(500px 240px at 50% -10%, rgba(35,84,247,.35), transparent 70%)
+  }
+  .next .kicker{color:#9bb0ff}
+  .next h2{color:#fff;font-family:"Space Grotesk"}
+  .next p{color:#b6b6c2;margin-top:14px;font-size:16px;max-width:460px;margin-left:auto;margin-right:auto}
+  .next .btn-primary{margin-top:28px;box-shadow:0 14px 40px rgba(35,84,247,.4)}
+  .next .btn-primary:hover{background:#3d68ff}
+
+  footer{padding:40px 0 56px;text-align:center;color:var(--muted);font-size:13px}
+  footer .mk{font-family:"Space Grotesk";font-weight:600;color:var(--ink-soft);font-size:14px;margin-bottom:6px}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- hero subtitle ---------- */
+  .hero-sub{font-family:"Space Grotesk";font-weight:600;font-size:clamp(20px,3vw,27px);color:var(--ink);margin-top:18px;letter-spacing:-.015em}
+
+  /* ---------- transformation (antes / desde hoy) ---------- */
+  .shift{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+  .shift-card{border:1px solid var(--line);border-radius:var(--radius);padding:26px 26px 28px}
+  .shift-card.before{background:var(--panel)}
+  .shift-card.after{background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-color:#dfe5ff}
+  .shift-card .sh-head{font-family:"Space Grotesk";font-weight:600;font-size:16px;letter-spacing:-.01em;margin-bottom:18px}
+  .shift-card.before .sh-head{color:var(--muted)}
+  .shift-card.after .sh-head{color:var(--accent-deep)}
+  .shift-card ul{list-style:none;display:grid;gap:13px}
+  .shift-card li{display:flex;align-items:flex-start;gap:12px;font-size:15.5px;line-height:1.45}
+  .shift-card.before li{color:var(--muted)}
+  .shift-card.after li{color:var(--ink)}
+  .sh-ic{flex:none;margin-top:2px}
+
+  /* ---------- promise ---------- */
+  .promise{border:1px solid var(--line-strong);border-left:3px solid var(--accent);border-radius:var(--radius);padding:32px 34px;background:linear-gradient(180deg,var(--accent-wash-2),#fff)}
+  .promise .kicker{margin-bottom:14px}
+  .promise p{font-size:17.5px;color:var(--ink-soft);line-height:1.68}
+  .promise p + p{margin-top:15px}
+  .promise p strong{color:var(--ink);font-weight:600}
+  .promise .seal{font-family:"Space Grotesk";font-weight:600;color:var(--ink)}
+
+  /* ---------- panic mode ---------- */
+  .panic-fab{
+    position:fixed;right:22px;bottom:22px;z-index:80;
+    display:inline-flex;align-items:center;gap:11px;
+    background:var(--ink);color:#fff;border:none;cursor:pointer;
+    padding:12px 17px;border-radius:14px;box-shadow:0 10px 30px rgba(11,11,15,.24);
+    font-family:"Inter";transition:transform .16s ease, box-shadow .2s ease
+  }
+  .panic-fab:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(11,11,15,.3)}
+  .panic-fab .emo{font-size:18px;line-height:1}
+  .panic-fab .txt{display:flex;flex-direction:column;text-align:left;line-height:1.18}
+  .panic-fab .txt b{font-weight:600;font-size:14.5px}
+  .panic-fab .txt span{font-weight:400;font-size:11.5px;color:#a8a8b3}
+
+  .panic-overlay{position:fixed;inset:0;z-index:90;background:rgba(11,11,15,.46);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:24px}
+  .panic-overlay.open{display:flex;animation:fade .2s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .panic-modal{background:#fff;width:100%;max-width:720px;border-radius:22px;max-height:86vh;overflow:auto;box-shadow:0 30px 80px rgba(11,11,15,.3);animation:slideup .3s cubic-bezier(.2,.7,.2,1)}
+  @keyframes slideup{from{transform:translateY(22px);opacity:.6}to{transform:none;opacity:1}}
+  .panic-head{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);padding:22px 26px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;z-index:2}
+  .panic-head .ph-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .panic-head h3{font-size:22px;font-weight:600;margin-top:8px}
+  .panic-head .ph-sub{font-size:14px;color:var(--muted);margin-top:5px}
+  .panic-close{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line-strong);background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--ink-soft);transition:all .16s}
+  .panic-close:hover{background:var(--panel-2);border-color:#cdcdd6}
+  .panic-grid{padding:18px 22px 26px;display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+  .panic-card{
+    display:flex;align-items:center;gap:13px;text-align:left;cursor:pointer;width:100%;
+    border:1px solid var(--line);border-radius:13px;padding:14px 15px;background:#fff;
+    font-family:"Inter";font-weight:600;font-size:15px;color:var(--ink);
+    transition:border-color .16s, box-shadow .2s, transform .16s
+  }
+  .panic-card:hover{border-color:#d6dcf6;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  .panic-card .pemo{font-size:20px;flex:none;width:42px;height:42px;border-radius:11px;background:var(--accent-wash);display:grid;place-items:center}
+  .panic-card .parrow{margin-left:auto;color:var(--muted);transition:transform .16s}
+  .panic-card:hover .parrow{transform:translateX(3px);color:var(--accent)}
+  .panic-detail-wrap{padding:18px 22px 28px;display:none}
+  .panic-detail-wrap.show{display:block}
+  .panic-back{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--accent-deep);background:none;border:none;cursor:pointer;margin-bottom:18px;padding:6px 4px}
+  .panic-back:hover{text-decoration:underline}
+  .pd{display:none}
+  .pd.show{display:block;animation:fade .2s ease}
+  .pd h4{font-family:"Space Grotesk";font-size:20px;font-weight:600;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:11px}
+  .pd .pd-emo{font-size:22px}
+  .pd .pd-hint{font-size:15px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+  .pd .pd-mod{font-size:12px;color:var(--accent-deep);background:var(--accent-wash);padding:4px 11px;border-radius:999px;display:inline-block;margin-top:16px;font-weight:500}
+
+  /* ---------- value band (hero) ---------- */
+  .value-band{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+  .vbadge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+
+  /* ---------- header actions + pills ---------- */
+  .bar-actions{display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none}
+  .bar-actions::-webkit-scrollbar{display:none}
+  .think-pill,.guide-pill,.surprise-pill{flex:none}
+  .think-pill{display:inline-flex;align-items:center;gap:6px;font-family:"Inter";font-size:13px;font-weight:600;color:#fff;background:var(--accent);border:none;border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:var(--shadow-blue);transition:background .2s ease, transform .15s ease;white-space:nowrap}
+  .think-pill:hover{background:var(--accent-deep);transform:translateY(-1px)}
+  .guide-pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:6px 11px;cursor:pointer;white-space:nowrap;transition:all .16s}
+  .guide-pill:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+
+  /* ---------- toolbox note ---------- */
+  .tool-note{display:flex;gap:11px;align-items:flex-start;background:var(--accent-wash-2);border:1px solid #dfe5ff;border-radius:12px;padding:13px 16px;margin-top:24px;font-size:14.5px;color:var(--ink-soft);line-height:1.5}
+  .tool-note .ti{flex:none}
+
+  /* ---------- guide modal body ---------- */
+  .guide-body{padding:22px 24px 28px}
+  .guide-input-row{display:flex;gap:10px}
+  #guideInput{flex:1;font-family:"Inter";font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:11px;padding:13px 15px;outline:none;transition:border-color .16s}
+  #guideInput::placeholder{color:#a1a1aa}
+  #guideInput:focus{border-color:var(--accent)}
+  .guide-go{padding:13px 18px;white-space:nowrap}
+  .guide-chips{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .guide-chip-label{font-size:13px;color:var(--muted);width:100%;margin-bottom:3px}
+  .guide-chip{font-family:"Inter";font-size:13.5px;font-weight:500;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:all .16s}
+  .guide-chip:hover{border-color:#d6dcf6;background:var(--accent-wash-2);color:var(--accent-deep)}
+  .guide-result{margin-top:22px}
+  .g-rec{border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-radius:14px;padding:20px 22px;animation:fade .25s ease}
+  .g-rec-eyebrow{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .g-rec-name{font-family:"Space Grotesk";font-weight:600;font-size:19px;color:var(--ink);margin-top:6px;letter-spacing:-.01em}
+  .g-rec-why{font-size:15px;color:var(--ink-soft);margin-top:9px;line-height:1.55}
+  .g-rec-foot{font-size:13.5px;color:var(--muted);margin-top:14px}
+  .g-rec .btn{margin-top:15px}
+  .guide-hint{font-size:14px;color:#c0392b;animation:fade .2s ease}
+
+  /* ---------- favorites (star) ---------- */
+  .prompt-head .label{margin-right:auto}
+  .fav-btn{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--line-strong);background:#fff;color:#a1a1aa;cursor:pointer;transition:all .16s;margin-right:8px;flex:none}
+  .fav-btn svg{fill:transparent;transition:fill .16s}
+  .fav-btn:hover{border-color:#d6dcf6;color:var(--accent)}
+  .fav-btn.faved{color:var(--accent);border-color:#dfe5ff;background:var(--accent-wash-2)}
+  .fav-btn.faved svg{fill:var(--accent)}
+  .fav-note{display:flex;gap:13px;align-items:flex-start;margin-top:30px;padding:17px 19px;border:1px dashed var(--line-strong);border-radius:13px;background:var(--panel)}
+  .fav-note .fn-star{flex:none;width:36px;height:36px;border-radius:10px;background:var(--accent-wash);display:grid;place-items:center;color:var(--accent)}
+  .fav-note h4{font-family:"Space Grotesk";font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px}
+  .fav-note p{font-size:14px;color:var(--muted);line-height:1.5}
+
+  /* ---------- hero brand claim ---------- */
+  .hero-meet{font-size:15px;color:var(--muted);margin-top:10px;font-weight:500}
+  .hero-meet b{color:var(--accent-deep);font-weight:600}
+
+  /* ---------- module time chip ---------- */
+  .mod-meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+  .mod-meta .tag{align-self:auto;margin-top:0}
+  .time{font-size:11px;font-weight:600;color:var(--accent-deep);background:var(--accent-wash);padding:3px 9px;border-radius:999px;white-space:nowrap}
+
+  /* ---------- global search ---------- */
+  .search{position:relative;max-width:560px;margin-top:26px}
+  .search-box{display:flex;align-items:center;gap:11px;border:1px solid var(--line-strong);border-radius:13px;padding:14px 16px;background:#fff;box-shadow:var(--shadow-sm);transition:border-color .16s, box-shadow .2s}
+  .search-box:focus-within{border-color:var(--accent);box-shadow:var(--shadow-md)}
+  .search-box > svg{flex:none;color:var(--muted)}
+  .search-box input{flex:1;border:none;outline:none;font-family:"Inter";font-size:15px;color:var(--ink);background:transparent}
+  .search-box input::placeholder{color:#a1a1aa}
+  .search-results{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow-md);overflow:hidden;z-index:30;display:none}
+  .search-results.show{display:block;animation:fade .15s ease}
+  .sr{display:flex;align-items:center;gap:12px;padding:12px 15px;cursor:pointer;border:none;background:#fff;width:100%;text-align:left;font-family:"Inter";border-bottom:1px solid var(--line);transition:background .12s}
+  .sr:last-child{border-bottom:none}
+  .sr:hover{background:var(--accent-wash-2)}
+  .sr .sr-emo{font-size:17px;flex:none;width:36px;height:36px;border-radius:9px;background:var(--accent-wash);display:grid;place-items:center}
+  .sr .sr-tit{font-size:14.5px;font-weight:600;color:var(--ink)}
+  .sr .sr-sub{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .sr .sr-mod{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--accent-deep);white-space:nowrap}
+  .sr-empty{padding:15px;color:var(--muted);font-size:14px;text-align:center}
+
+  /* ---------- header pills (guide + surprise) ---------- */
+  .mk-txt{display:inline}
+  .surprise-pill{display:inline-flex;align-items:center;gap:6px;font-family:"Inter";font-size:13px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:6px 11px;cursor:pointer;transition:all .16s}
+  .surprise-pill:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+
+  /* ---------- surprise modal ---------- */
+  .surprise-body{padding:22px 24px 26px}
+  .surprise-card{border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-radius:16px;padding:24px;animation:fade .25s ease}
+  .surprise-card .s-type{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+  .surprise-card h4{font-family:"Space Grotesk";font-size:20px;font-weight:600;color:var(--ink);margin-top:8px;display:flex;gap:11px;align-items:center;line-height:1.25}
+  .surprise-card .s-emo{font-size:24px;flex:none}
+  .surprise-card .s-body{font-size:15.5px;color:var(--ink-soft);margin-top:12px;line-height:1.6}
+  .surprise-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .btn-reroll{display:inline-flex;align-items:center;gap:8px;font-family:"Inter";font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:11px;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--line-strong);transition:all .16s}
+  .btn-reroll:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-wash-2)}
+
+  /* ---------- manifesto (powerful phrase + metric + scene) ---------- */
+  .manifesto{text-align:center}
+  .manifesto-quote{font-family:"Space Grotesk";font-weight:600;font-size:clamp(24px,4vw,38px);line-height:1.22;letter-spacing:-.02em;color:var(--ink);max-width:680px;margin:0 auto}
+  .manifesto-quote .em{color:var(--accent)}
+  .metric{display:inline-flex;align-items:center;gap:13px;margin-top:30px;padding:15px 22px;border:1px solid #dfe5ff;background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-radius:14px;text-align:left;max-width:560px}
+  .metric svg{flex:none;color:var(--accent)}
+  .metric p{font-size:15px;color:var(--ink-soft);line-height:1.5}
+  .metric b{color:var(--ink);font-weight:600}
+  .flow-scene{display:flex;align-items:stretch;justify-content:center;gap:16px;margin-top:40px;flex-wrap:wrap;text-align:left}
+  .flow-col{flex:1;min-width:240px;max-width:320px;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;background:#fff}
+  .flow-col.before{background:var(--panel)}
+  .flow-col.after{background:linear-gradient(180deg,var(--accent-wash-2),#fff);border-color:#dfe5ff}
+  .flow-h{font-family:"Space Grotesk";font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:14px}
+  .flow-col.before .flow-h{color:var(--muted)}
+  .flow-col.after .flow-h{color:var(--accent-deep)}
+  .flow-item{display:block;font-size:15px;line-height:2;color:var(--ink-soft)}
+  .flow-col.before .flow-item{color:var(--muted)}
+  .flow-arrow{display:flex;align-items:center;color:var(--accent);font-size:24px;font-weight:600}
+
+  /* ---------- journey progress ---------- */
+  .journey{margin-top:30px;border:1px solid var(--line);border-radius:var(--radius);padding:26px 26px 18px;background:#fff;box-shadow:var(--shadow-sm)}
+  .journey-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .journey-label{font-size:14px;font-weight:600;color:var(--ink)}
+  .journey-pct{font-family:"Space Grotesk";font-weight:600;font-size:15px;color:var(--accent-deep)}
+  .journey-bar{height:8px;border-radius:999px;background:#e7eaf6;overflow:hidden}
+  .journey-bar > span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),#5a7bff);transition:width .5s cubic-bezier(.2,.7,.2,1)}
+  .journey-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:22px}
+  .jrow{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:#fff;cursor:pointer;font-family:"Inter";font-size:14.5px;font-weight:500;color:var(--ink);text-align:left;transition:all .16s}
+  .jrow:hover{border-color:#d6dcf6;background:#fafbff}
+  .jrow .jcheck{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line-strong);display:grid;place-items:center;color:#fff;transition:all .16s}
+  .jrow .jcheck svg{opacity:0;transform:scale(.5);transition:all .16s}
+  .jrow.done .jcheck{background:var(--accent);border-color:var(--accent)}
+  .jrow.done .jcheck svg{opacity:1;transform:scale(1)}
+  .jrow.done{color:var(--muted)}
+
+  /* ---------- think modal (Pensémoslo juntos) ---------- */
+  .think-body{padding:22px 24px 28px}
+  .qh-textarea{width:100%;min-height:118px;font-family:"Inter";font-size:15px;line-height:1.6;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:13px;padding:15px 16px;outline:none;resize:vertical;transition:border-color .16s}
+  .qh-textarea:focus{border-color:var(--accent)}
+  .qh-textarea::placeholder{color:#a1a1aa}
+  .think-actions{margin-top:14px;display:flex;justify-content:flex-end}
+  .mentor{animation:fade .25s ease}
+  .mentor-intro{font-size:16px;color:var(--ink);line-height:1.6;margin-bottom:18px}
+  .mentor-row{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+  .mentor-row .mn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent-wash);color:var(--accent-deep);font-family:"Space Grotesk";font-weight:600;font-size:14px;display:grid;place-items:center}
+  .mentor-row h5{font-family:"Space Grotesk";font-size:12.5px;font-weight:600;color:var(--accent-deep);letter-spacing:.07em;text-transform:uppercase;margin-bottom:7px}
+  .mentor-row p{font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .mentor-row p b{color:var(--ink)}
+  .mentor-row .prompt{margin-top:4px}
+  .mentor-note{margin-top:20px;font-size:13.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;line-height:1.55}
+
+  /* ---------- hero testimonial ---------- */
+  .testimonial{display:flex;gap:14px;align-items:flex-start;max-width:480px;margin-top:30px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow-sm)}
+  .testimonial .tq{flex:none;font-family:"Space Grotesk";font-size:30px;line-height:1;color:var(--accent);opacity:.5}
+  .testimonial blockquote{font-size:15.5px;color:var(--ink);line-height:1.5;font-weight:500}
+  .testimonial cite{display:block;margin-top:8px;font-size:13px;color:var(--muted);font-style:normal}
+  .testimonial .stars{color:var(--accent);font-size:12px;letter-spacing:1px;margin-top:6px}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1400px){
+    .bar-inner{padding:13px 18px;gap:10px}
+    .bar-actions{gap:6px}
+    .think-pill{padding:6px 11px}
+    .guide-pill{padding:6px 10px}
+    .surprise-pill{padding:6px 10px}
+  }
+  @media (max-width:900px){
+    .mk-txt{display:none}
+    .guide-pill .bl{display:none}
+    .guide-pill{font-size:14px;padding:6px 10px}
+    .surprise-pill .sp-txt{display:none}
+    .surprise-pill{padding:6px 10px;font-size:15px}
+    .think-pill{font-size:12.5px;padding:6px 11px}
+  }
+  @media (max-width:640px){
+    body{font-size:16px}
+    .section{padding:56px 0}
+    .hero{padding:66px 0 56px}
+    .wrap{padding:0 20px}
+    .bar-inner{padding:12px 20px}
+    .pill{display:none}
+    .formula{grid-template-columns:1fr}
+    .mod{gap:13px;padding:15px 16px}
+    .mod-meta .tag{display:none}
+    .reframe{padding:26px 22px}
+    .win-top{padding:24px 22px 22px}
+    .step{padding:16px 14px;gap:13px}
+    .next{padding:44px 24px}
+    .cta-row .btn{flex:1 1 auto;justify-content:center}
+    .shift{grid-template-columns:1fr;gap:12px}
+    .promise{padding:26px 22px}
+    .flow-scene{flex-direction:column;align-items:stretch;gap:12px}
+    .flow-arrow{transform:rotate(90deg);justify-content:center}
+    .flow-col{max-width:none}
+    .metric{margin-top:24px}
+    .journey-list{grid-template-columns:1fr}
+    .panic-overlay{padding:0;align-items:flex-end}
+    .panic-modal{border-radius:22px 22px 0 0;max-height:90vh}
+    .panic-grid{grid-template-columns:1fr;padding:16px 18px 24px}
+    .panic-card:last-child{grid-column:auto}
+    .panic-fab{right:14px;bottom:14px;padding:11px 15px}
+    .panic-fab .txt span{display:none}
+    .guide-input-row{flex-direction:column}
+    .guide-go{width:100%}
+    .vbadge{font-size:12.5px;padding:6px 12px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-inner">
+    <a class="mark" href="#top"><span class="glyph">IA</span><span class="mk-txt">Tu Primer Empleado IA</span></a>
+    <div class="bar-actions">
+      <button class="think-pill" id="thinkOpen">🎩 <span class="bl">Pensémoslo juntos</span></button>
+      <button class="guide-pill" id="guideOpen">🧭 <span class="bl">¿Por dónde empiezo?</span></button>
+      <button class="surprise-pill" id="surpriseOpen">✨ <span class="sp-txt">Sorprendeme</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- PANIC MODE -->
+  <button class="panic-fab" id="panicOpen" aria-label="Abrir Resolución Rápida">
+    <span class="emo">⚡</span>
+    <span class="txt"><b>Resolución rápida</b><span>Resolvé algo ahora</span></span>
+  </button>
+
+  <div class="panic-overlay" id="panicOverlay" role="dialog" aria-modal="true" aria-label="Resolución Rápida">
+    <div class="panic-modal">
+      <div class="panic-head">
+        <div>
+          <span class="ph-eyebrow">⚡ Resolución rápida</span>
+          <h3 id="panicTitle">¿Qué necesitás resolver ahora?</h3>
+          <p class="ph-sub" id="panicSub">Elegí tu situación. Te doy el mensaje exacto para pegarle a tu IA.</p>
+        </div>
+        <button class="panic-close" id="panicClose" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="panic-grid" id="panicGrid">
+        <button class="panic-card" data-panic="cliente"><span class="pemo">💬</span>Responder un cliente difícil<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="post"><span class="pemo">📱</span>Crear una publicación<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="email"><span class="pemo">📧</span>Escribir un email<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="oferta"><span class="pemo">💰</span>Crear una oferta<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="dia"><span class="pemo">📋</span>Organizar mi día<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="decision"><span class="pemo">🧠</span>Tomar una decisión<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="ideas"><span class="pemo">🚀</span>Generar ideas<span class="parrow">→</span></button>
+        <button class="panic-card" data-panic="prompt"><span class="pemo">🤖</span>No sé qué pedirle a la IA<span class="parrow">→</span></button>
+      </div>
+
+      <div class="panic-detail-wrap" id="panicDetail">
+        <button class="panic-back" id="panicBack">← Volver a las opciones</button>
+
+        <div class="pd" data-detail="cliente">
+          <h4><span class="pd-emo">💬</span>Responder un cliente difícil</h4>
+          <p class="pd-hint">Respirá. No respondas en caliente. Copiá esto, pegá el mensaje del cliente y mandalo.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Actuá como un responsable de atención al cliente, con calma y empatía. Un cliente me escribió esto y necesito responderle bien:
+
+<span class="br">[PEGÁ EL MENSAJE DEL CLIENTE]</span>
+
+Escribí una respuesta que reconozca su situación, no discuta ni presione, y proponga un paso concreto para resolverlo.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 2 — El Asistente Comercial</span>
+        </div>
+
+        <div class="pd" data-detail="post">
+          <h4><span class="pd-emo">📱</span>Crear una publicación</h4>
+          <p class="pd-hint">Sin pensar una hora qué subir. Completá tu rubro y listo.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Tengo un negocio de <span class="br">[DESCRIBILO]</span>. Escribí una publicación para Instagram con tono cercano que despierte interés en lo que ofrezco sin sonar agresiva, y terminá invitando a escribir por mensaje privado.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 3 — El Community Manager</span>
+        </div>
+
+        <div class="pd" data-detail="email">
+          <h4><span class="pd-emo">📧</span>Escribir un email</h4>
+          <p class="pd-hint">Decile de qué se trata y te lo deja listo, con asunto incluido.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Ayudame a escribir un email claro, cordial y profesional sobre este tema: <span class="br">[DESCRIBILO]</span>. Que transmita confianza y termine con una invitación a responder. Dame el asunto y el cuerpo.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 4 — Biblioteca Maestra</span>
+        </div>
+
+        <div class="pd" data-detail="oferta">
+          <h4><span class="pd-emo">💰</span>Crear una oferta</h4>
+          <p class="pd-hint">Una oferta difícil de rechazar, armada en un minuto.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Actuá como especialista en marketing de respuesta directa. Diseñá una oferta difícil de rechazar para esto: <span class="br">[TU PRODUCTO O SERVICIO]</span>. Incluí un beneficio claro, un bono, reducción del riesgo, algo de urgencia y un llamado a la acción.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 6 — El Creador de Dinero</span>
+        </div>
+
+        <div class="pd" data-detail="dia">
+          <h4><span class="pd-emo">📋</span>Organizar mi día</h4>
+          <p class="pd-hint">Pegá tu lista caótica y salí con las 3 cosas que importan.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Estas son todas mis tareas pendientes:
+
+<span class="br">[PEGALAS ACÁ]</span>
+
+Ordenalas por impacto y urgencia, y armame un plan para hoy con las 3 tareas más importantes y en qué orden conviene hacerlas.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 5 — El Director General</span>
+        </div>
+
+        <div class="pd" data-detail="decision">
+          <h4><span class="pd-emo">🧠</span>Tomar una decisión</h4>
+          <p class="pd-hint">Una segunda opinión inteligente antes de decidir.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Tengo que tomar esta decisión: <span class="br">[DESCRIBILA]</span>. Actuá como un asesor estratégico: compará ventajas, riesgos y consecuencias de cada opción, y decime qué preguntas debería hacerme antes de decidir.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 7 — El Coach Personal</span>
+        </div>
+
+        <div class="pd" data-detail="ideas">
+          <h4><span class="pd-emo">🚀</span>Generar ideas</h4>
+          <p class="pd-hint">Cuando te quedaste en blanco, esto te destraba.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Tengo un negocio de <span class="br">[DESCRIBILO]</span>. Dame 10 ideas concretas para <span class="br">[CONSEGUIR MÁS CLIENTES / CREAR CONTENIDO / GENERAR INGRESOS EXTRA]</span>. Ordenalas de la más fácil de aplicar a la más ambiciosa.</pre></div>
+          <span class="pd-mod">Más conversaciones así en el Módulo 6 — El Creador de Dinero</span>
+        </div>
+
+        <div class="pd" data-detail="prompt">
+          <h4><span class="pd-emo">🤖</span>No sé qué pedirle a la IA</h4>
+          <p class="pd-hint">No pasa nada. Dejá que la IA te ayude a armar tu propio pedido, paso a paso.</p>
+          <div class="prompt"><div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>
+<pre>Quiero lograr un objetivo pero todavía no sé cómo formular mi pedido.
+
+Actuá como un consultor experto. Haceme todas las preguntas necesarias para entender mi situación y ayudame a convertir mi idea en un prompt claro, completo y efectivo.</pre></div>
+          <span class="pd-mod">Aprendé a pedir bien en el Módulo 1 — El Cerebro</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- GUIDE MODAL -->
+  <div class="panic-overlay" id="guideOverlay" role="dialog" aria-modal="true" aria-label="Por dónde empezar">
+    <div class="panic-modal">
+      <div class="panic-head">
+        <div>
+          <span class="ph-eyebrow">🧭 Tu guía</span>
+          <h3>¿Por dónde empiezo?</h3>
+          <p class="ph-sub">Escribí en una línea qué necesitás resolver hoy y te digo qué herramienta abrir.</p>
+        </div>
+        <button class="panic-close" id="guideClose" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="guide-body">
+        <div class="guide-input-row">
+          <input id="guideInput" type="text" placeholder="Ej: tengo que responder un cliente enojado" autocomplete="off">
+          <button id="guideGo" class="btn btn-primary guide-go">Recomendarme</button>
+        </div>
+        <div class="guide-chips">
+          <span class="guide-chip-label">O tocá un ejemplo:</span>
+          <button class="guide-chip" data-ex="Tengo que responder un cliente.">Tengo que responder un cliente.</button>
+          <button class="guide-chip" data-ex="Necesito vender más.">Necesito vender más.</button>
+          <button class="guide-chip" data-ex="No sé qué publicar.">No sé qué publicar.</button>
+          <button class="guide-chip" data-ex="Quiero organizar mi semana.">Quiero organizar mi semana.</button>
+          <button class="guide-chip" data-ex="Tengo una idea pero no sé cómo bajarla a tierra.">Tengo una idea pero no sé cómo bajarla a tierra.</button>
+        </div>
+        <div class="guide-result" id="guideResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SURPRISE MODAL -->
+  <div class="panic-overlay" id="surpriseOverlay" role="dialog" aria-modal="true" aria-label="Sorprendeme">
+    <div class="panic-modal">
+      <div class="panic-head">
+        <div>
+          <span class="ph-eyebrow">✨ Sorprendeme</span>
+          <h3>Tu chispa de hoy</h3>
+          <p class="ph-sub">Una idea, un prompt o una acción rápida para arrancar ahora.</p>
+        </div>
+        <button class="panic-close" id="surpriseClose" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="surprise-body">
+        <div id="surpriseSlot"></div>
+        <div class="surprise-actions">
+          <button class="btn-reroll" id="surpriseMore">✨ Otra sorpresa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THINK MODAL (Pensémoslo juntos) -->
+  <div class="panic-overlay" id="thinkOverlay" role="dialog" aria-modal="true" aria-label="Pensémoslo juntos">
+    <div class="panic-modal">
+      <div class="panic-head">
+        <div>
+          <span class="ph-eyebrow">🎩 Pensémoslo juntos</span>
+          <h3>Contame qué está pasando</h3>
+          <p class="ph-sub">Escribilo como si hablaras con un socio. Lo ordenamos juntos y vemos por dónde arrancar.</p>
+        </div>
+        <button class="panic-close" id="thinkClose" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="think-body">
+        <textarea class="qh-textarea" id="thinkIn" placeholder="Ejemplo: Tengo un cliente importante enojado y no sé cómo responderle sin perder la cuenta."></textarea>
+        <div class="think-actions"><button class="btn btn-primary" id="thinkGo">Pensemos juntos →</button></div>
+        <div class="guide-chips">
+          <span class="guide-chip-label">O empezá por una situación típica:</span>
+          <button class="guide-chip" data-ex="Tengo un cliente importante enojado.">Tengo un cliente importante enojado.</button>
+          <button class="guide-chip" data-ex="No sé cómo cobrar una deuda.">No sé cómo cobrar una deuda.</button>
+          <button class="guide-chip" data-ex="Estoy pensando cambiar de rubro.">Estoy pensando cambiar de rubro.</button>
+          <button class="guide-chip" data-ex="Quiero vender más pero no sé por dónde empezar.">Quiero vender más pero no sé por dónde empezar.</button>
+        </div>
+        <div class="result" id="thinkRes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><span class="dot"></span>Empezá por acá</span>
+      <h1>Dejá de hacer<br>todo <span class="em">solo</span>.</h1>
+      <p class="hero-sub">Trabajá con inteligencia artificial como si tuvieras un equipo.</p>
+      <p class="hero-meet">Conocé a <b>Tu Primer Empleado IA</b>.</p>
+      <div class="value-band">
+        <span class="vbadge">⭐ +100 conversaciones listas para copiar y pegar</span>
+        <span class="vbadge">⏱️ Empezá a ahorrar tiempo en los próximos 15 minutos</span>
+      </div>
+      <p class="lede">Muchos emprendedores hacen más trabajo del necesario porque todavía no aprendieron a delegar en la IA. Este sistema está pensado para cambiar eso: un asistente que <strong>entiende tu negocio</strong>, mejora tus mensajes y te ayuda a pensar mejor.</p>
+      <div class="search">
+        <div class="search-box">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>
+          <input id="globalSearch" type="text" placeholder="¿Qué necesitás resolver hoy? Ej.: responder un cliente, vender más, organizar mi semana…" autocomplete="off" aria-label="Buscar una solución">
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#victoria">Empezar mi victoria de 15 min <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="#mapa">Ver cómo se organiza</a>
+      </div>
+      <div class="reassure">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+        Sin conocimientos técnicos. Sin instalar nada. Solo copiar, pegar y adaptar.
+      </div>
+      <div class="testimonial">
+        <span class="tq">“</span>
+        <div>
+          <blockquote>Un mensaje que antes me llevaba 20 minutos ahora lo resuelvo en menos de 2.</blockquote>
+          <div class="stars">★★★★★</div>
+          <cite>— Dueña de un local de indumentaria</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="section manifesto">
+    <div class="wrap reveal">
+      <p class="manifesto-quote">No necesitás aprender inteligencia artificial.<br><span class="em">Necesitás aprender qué conversación tener.</span></p>
+      <div class="metric">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <p><b>Si usás este sistema 20 minutos por día,</b> podrías recuperar más de <b>120 horas</b> de trabajo repetitivo al año.</p>
+      </div>
+      <div class="flow-scene">
+        <div class="flow-col before">
+          <span class="flow-h">Antes</span>
+          <span class="flow-item">😓 Responder clientes</span>
+          <span class="flow-item">😓 Pensar publicaciones</span>
+          <span class="flow-item">😓 Escribir mails</span>
+          <span class="flow-item">😓 Organizar tareas</span>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-col after">
+          <span class="flow-h">Ahora</span>
+          <span class="flow-item">🤖 Abrís una conversación</span>
+          <span class="flow-item">🤖 Pegás un prompt</span>
+          <span class="flow-item">🤖 Obtenés una versión mejor</span>
+          <span class="flow-item">🤖 Seguís con tu negocio</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFRAME -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="kicker">Lo primero que tenés que entender</div>
+      <h2>Cambiá la forma de mirar esto</h2>
+      <p class="sub">Si lo tratás como algo para leer una vez y guardar, te va a aburrir. Si lo tratás como un compañero de trabajo que abrís todos los días, te va a cambiar el día.</p>
+      <div class="reframe" style="margin-top:30px">
+        <p class="quote"><span class="strike">No compré un PDF.</span><br>Incorporé una nueva forma de trabajar.</p>
+        <p>La inteligencia artificial no adivina lo que necesitás. Cuanto mejor le explicás el contexto, el objetivo y lo que esperás, mejor trabaja para vos. Este sistema te da las conversaciones ya pensadas para que no empieces de cero nunca más: vender, comunicar, organizar, crear y decidir.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHIFT (antes / desde hoy) -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="kicker">El cambio empieza hoy</div>
+      <h2>De hacer todo solo a trabajar acompañado</h2>
+      <div class="shift">
+        <div class="shift-card before">
+          <div class="sh-head">Antes hacías esto…</div>
+          <ul>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>Pensabas todo solo.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>Escribías todo desde cero.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>Perdías tiempo respondiendo siempre lo mismo.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>Improvisabas las publicaciones.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>Postergabas decisiones importantes.</li>
+          </ul>
+        </div>
+        <div class="shift-card after">
+          <div class="sh-head">Desde hoy…</div>
+          <ul>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2354f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Conversás con la IA.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2354f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Mejorás tus ideas en minutos.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2354f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Ahorrás tiempo todos los días.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2354f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tenés una segunda opinión inteligente.</li>
+            <li><svg class="sh-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2354f7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Te enfocás en hacer crecer tu negocio.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="section" id="mapa">
+    <div class="wrap reveal">
+      <div class="kicker">Tu sistema completo</div>
+      <h2>Tu caja de herramientas</h2>
+      <p class="sub">Esto no se estudia de principio a fin: se usa. Es una caja de soluciones para situaciones reales de tu negocio, no un manual de teoría. Cada herramienta arranca con un problema concreto y termina con algo que aplicás hoy.</p>
+      <div class="tool-note"><span class="ti">💡</span><span><b>No hace falta seguir el orden.</b> Entrá directo al módulo que resuelve el problema que tenés hoy.</span></div>
+      <div class="map">
+
+        <div class="mod" id="mod-m1"><span class="idx">1</span><div class="body"><h3>El Cerebro</h3><p>Aprendé a hablarle a la IA para que trabaje bien. La base de todo.</p></div><div class="mod-meta"><span class="tag">Empezá acá</span><span class="time">20 min</span></div></div>
+
+        <div class="mod" id="mod-m2"><span class="idx">2</span><div class="body"><h3>El Asistente Comercial</h3><p>Respondé consultas, presupuestos y seguimientos en minutos.</p></div><div class="mod-meta"><span class="tag">Vender</span><span class="time">15 min</span></div></div>
+
+        <div class="mod" id="mod-m3"><span class="idx">3</span><div class="body"><h3>El Community Manager</h3><p>Nunca más “¿qué publico hoy?”. Ideas y posts listos para adaptar.</p></div><div class="mod-meta"><span class="tag">Contenido</span><span class="time">18 min</span></div></div>
+
+        <div class="mod" id="mod-m4"><span class="idx">4</span><div class="body"><h3>Biblioteca Maestra de Conversaciones</h3><p>Los mensajes difíciles, resueltos: cobrar, disculparse, subir precios.</p></div><div class="mod-meta"><span class="tag">Comunicar</span><span class="time">20 min</span></div></div>
+
+        <div class="mod" id="mod-m5"><span class="idx">5</span><div class="body"><h3>El Director General IA</h3><p>Ordená el caos, priorizá tus tareas y decidí con la cabeza clara.</p></div><div class="mod-meta"><span class="tag">Organizar</span><span class="time">15 min</span></div></div>
+
+        <div class="mod" id="mod-m6"><span class="idx">6</span><div class="body"><h3>El Creador de Dinero IA</h3><p>Ideas de negocio, ofertas irresistibles y precios que tienen sentido.</p></div><div class="mod-meta"><span class="tag">Crecer</span><span class="time">20 min</span></div></div>
+
+        <div class="mod" id="mod-m7"><span class="idx">7</span><div class="body"><h3>El Coach Personal IA</h3><p>Pensá mejor: decisiones, hábitos, foco y conversaciones importantes.</p></div><div class="mod-meta"><span class="tag">Pensar</span><span class="time">15 min</span></div></div>
+
+        <div class="mod alt" id="mod-misiones"><span class="idx">★</span><div class="body"><h3>Libro de Misiones · 21 Días</h3><p>El plan diario para que usar la IA se vuelva un hábito, no algo ocasional.</p></div><div class="mod-meta"><span class="tag">Rutina</span><span class="time">21 días</span></div></div>
+
+        <div class="mod alt" id="mod-prompts"><span class="idx">✦</span><div class="body"><h3>100 Prompts Legendarios</h3><p>Tu caja de herramientas. Buscás el desafío, copiás el prompt, listo.</p></div><div class="mod-meta"><span class="tag">Atajos</span><span class="time">consulta rápida</span></div></div>
+
+      </div>
+      <div class="fav-note">
+        <span class="fn-star"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+        <div>
+          <h4>Tus favoritos</h4>
+          <p>Cuando encuentres una conversación que uses seguido, tocá la <b>estrella</b> para guardarla y tenerla siempre a mano. Pronto vas a poder verlas todas juntas en tu panel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="kicker">Tu recorrido</div>
+      <h2>Tu progreso en el sistema</h2>
+      <p class="sub">No hay que hacerlo todo de una. Avanzá a tu ritmo: cada pieza que abrís ya te deja algo para aplicar. Marcá lo que vayas completando.</p>
+      <div class="journey">
+        <div class="journey-top">
+          <span class="journey-label" id="jLabel">1 de 10 completado</span>
+          <span class="journey-pct" id="jPct">10%</span>
+        </div>
+        <div class="journey-bar"><span id="jBar" style="width:10%"></span></div>
+        <div class="journey-list">
+          <button class="jrow done" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>Empezá por Acá</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Cerebro</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Asistente Comercial</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Community Manager</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>Biblioteca Maestra</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Director General IA</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Creador de Dinero IA</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>El Coach Personal IA</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>Libro de Misiones · 21 Días</button>
+          <button class="jrow" data-j><span class="jcheck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>100 Prompts Legendarios</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK WIN -->
+  <section class="section" id="victoria">
+    <div class="wrap reveal">
+      <div class="kicker">Tu primera victoria</div>
+      <h2>Tu primera victoria en 15 minutos</h2>
+      <p class="sub">Hacé estos cuatro pasos y vas a ver el sistema funcionando en vivo. Al terminar, tu empleado IA ya conoce tu negocio y te dejó tu propuesta de valor y un mensaje listo para usar.</p>
+
+      <div class="win" style="margin-top:30px">
+        <div class="win-top">
+          <div class="row">
+            <div>
+              <h3>El recorrido de los 15 minutos</h3>
+              <p class="meta">Abrí ChatGPT, Claude o Gemini en otra pestaña. Cuando termines un paso, marcalo.</p>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label" id="progLabel">0 de 4 completado</div>
+              <div class="progress"><span id="progBar"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="steps">
+
+          <!-- step 1 -->
+          <div class="step" data-step>
+            <button class="check" aria-label="Marcar paso como hecho">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+            </button>
+            <div>
+              <div class="step-head"><span class="step-title">Abrí tu IA y tenela lista</span><span class="step-time">2 min</span></div>
+              <p>Entrá a la inteligencia artificial que prefieras —ChatGPT, Claude o Gemini— y dejala abierta. No necesitás pagar nada para empezar.</p>
+            </div>
+          </div>
+
+          <!-- step 2 -->
+          <div class="step" data-step>
+            <button class="check" aria-label="Marcar paso como hecho">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+            </button>
+            <div>
+              <div class="step-head"><span class="step-title">Presentale tu negocio</span><span class="step-time">5 min</span></div>
+              <p>Copiá este mensaje, completá los corchetes con tus datos y enviáselo. A partir de acá, la IA trabaja conociendo tu negocio.</p>
+              <div class="prompt">
+                <div class="prompt-head">
+                  <span class="label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Conversación lista para copiar</span>
+                  <button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+<pre>Vas a ser mi asistente de trabajo. Te doy el contexto de mi negocio y quiero que lo recuerdes durante toda la conversación.
+
+- A qué me dedico: <span class="br">[DESCRIBÍ TU NEGOCIO]</span>
+- Qué vendo: <span class="br">[PRODUCTO O SERVICIO]</span>
+- Quién es mi cliente ideal: <span class="br">[DESCRIBILO]</span>
+- Cómo me gusta comunicarme: <span class="br">[CERCANO / PROFESIONAL / DIVERTIDO]</span>
+- Mi objetivo principal ahora: <span class="br">[QUÉ QUERÉS LOGRAR]</span>
+
+Confirmame que entendiste y haceme 3 preguntas para conocer mejor mi negocio.</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- step 3 -->
+          <div class="step" data-step>
+            <button class="check" aria-label="Marcar paso como hecho">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+            </button>
+            <div>
+              <div class="step-head"><span class="step-title">Conseguí tu propuesta de valor</span><span class="step-time">4 min</span></div>
+              <p>Ahora pedile que resuma en una sola frase qué hacés y a quién ayudás. Guardá la mejor versión: la vas a usar en tu bio, tu web y tus mensajes.</p>
+              <div class="prompt">
+                <div class="prompt-head">
+                  <span class="label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Conversación lista para copiar</span>
+                  <button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+<pre>Con todo lo que te conté, escribí mi propuesta de valor en una sola frase clara: qué hago, a quién ayudo y qué problema resuelvo.
+
+Dame 3 versiones distintas y marcá cuál es la más fuerte y por qué.</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- step 4 -->
+          <div class="step" data-step>
+            <button class="check" aria-label="Marcar paso como hecho">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>
+            </button>
+            <div>
+              <div class="step-head"><span class="step-title">Probalo con un mensaje real</span><span class="step-time">4 min</span></div>
+              <p>Pegá un mensaje que le escribís seguido a tus clientes y pedile que lo mejore. Vas a ver la diferencia al instante: ese es el trabajo que te va a ahorrar todos los días.</p>
+              <div class="prompt">
+                <div class="prompt-head">
+                  <span class="label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Conversación lista para copiar</span>
+                  <button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+<pre>Te voy a pegar un mensaje real que les escribo seguido a mis clientes. Reescribilo para que sea más claro, cercano y profesional, sin tecnicismos y manteniendo mi estilo.
+
+Mensaje: <span class="br">[PEGALO ACÁ]</span></pre>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="win-done" id="winDone">
+          <span class="tick"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+          <p><strong>Listo. Esa fue tu primera victoria.</strong> Tu empleado IA ya conoce tu negocio y te dio tres resultados que podés usar hoy. Así se siente cada módulo del sistema.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="kicker">El secreto detrás de todo</div>
+      <h2>La fórmula de las buenas conversaciones</h2>
+      <p class="sub">Todos los prompts del sistema usan esta estructura. Cuando la entendés, podés crear los tuyos para cualquier situación.</p>
+      <div class="formula">
+        <div class="f-card"><div class="n">01</div><h3>Contexto</h3><p>Qué hacés y de qué se trata tu negocio o tu situación.</p></div>
+        <div class="f-card"><div class="n">02</div><h3>Objetivo</h3><p>Qué querés conseguir exactamente con esta conversación.</p></div>
+        <div class="f-card"><div class="n">03</div><h3>Detalles</h3><p>Público, producto, tono, restricciones y datos importantes.</p></div>
+        <div class="f-card"><div class="n">04</div><h3>Formato</h3><p>Cómo querés la respuesta: lista, email, post, tabla, paso a paso.</p></div>
+      </div>
+      <p class="formula-note">Regla de oro: <b>la calidad de tus resultados depende de la calidad de tus conversaciones.</b> No memorices los prompts. Adaptalos, agregales contexto y contale a la IA quién sos.</p>
+    </div>
+  </section>
+
+  <!-- PROMISE -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="promise">
+        <div class="kicker">Una promesa</div>
+        <p>Si dentro de una semana seguís haciendo todo igual que hoy, <strong>este producto habrá fallado</strong>.</p>
+        <p>Pero si empezás a conversar con la IA todos los días, vas a recuperar tiempo, sacarte de encima las tareas repetitivas y tomar mejores decisiones.</p>
+        <p><span class="seal">Ese es el verdadero objetivo de Tu Primer Empleado IA.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT STEP -->
+  <section class="section">
+    <div class="wrap reveal">
+      <div class="next">
+        <div class="kicker">Tu siguiente paso</div>
+        <h2>Activá tu Primer Empleado IA</h2>
+        <p>Esto fue la bienvenida. Ahora entrá a tu sistema y resolvé lo primero que tengas en la cabeza hoy. Tu equipo IA ya está listo.</p>
+        <a class="btn btn-primary" href="Dashboard.html" id="nextBtn">🚀 Activar mi Primer Empleado IA <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="mk">Tu Primer Empleado IA</div>
+    El sistema operativo para emprendedores que quieren dejar de hacer todo solos.
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ----- copy buttons (delegated, works for dynamic content) ----- */
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest ? e.target.closest('[data-copy]') : null;
+    if(!btn) return;
+    var pre = btn.closest('.prompt').querySelector('pre');
+    var text = pre.innerText;
+    var done = function(){
+      btn.classList.add('copied');
+      var span = btn.querySelector('span');
+      var prev = span.textContent;
+      span.textContent = '¡Copiado!';
+      setTimeout(function(){ btn.classList.remove('copied'); span.textContent = prev; }, 1800);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(text, done); });
+    } else { fallback(text, done); }
+  });
+  /* ----- favorites: star toggle (delegated, in-memory) ----- */
+  document.addEventListener('click', function(e){
+    var star = e.target.closest ? e.target.closest('.fav-btn') : null;
+    if(!star) return;
+    star.classList.toggle('faved');
+    star.setAttribute('aria-pressed', star.classList.contains('faved') ? 'true':'false');
+  });
+  function fallback(text, cb){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); cb(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ----- quick win progress ----- */
+  var steps = Array.prototype.slice.call(document.querySelectorAll('[data-step]'));
+  var total = steps.length;
+  var bar = document.getElementById('progBar');
+  var label = document.getElementById('progLabel');
+  var doneBox = document.getElementById('winDone');
+  function update(){
+    var n = steps.filter(function(s){ return s.classList.contains('done'); }).length;
+    bar.style.width = (n/total*100) + '%';
+    label.textContent = n===total ? '¡Completado!' : (n + ' de ' + total + ' completado');
+    doneBox.classList.toggle('show', n===total);
+  }
+  steps.forEach(function(s){
+    s.querySelector('.check').addEventListener('click', function(){
+      s.classList.toggle('done'); update();
+    });
+  });
+
+  /* ----- panic mode ----- */
+  var pOpen=document.getElementById('panicOpen');
+  var pOverlay=document.getElementById('panicOverlay');
+  var pClose=document.getElementById('panicClose');
+  var pGrid=document.getElementById('panicGrid');
+  var pDetailWrap=document.getElementById('panicDetail');
+  var pBack=document.getElementById('panicBack');
+  var pTitle=document.getElementById('panicTitle');
+  var pSub=document.getElementById('panicSub');
+  var pDetails=Array.prototype.slice.call(document.querySelectorAll('.pd'));
+
+  function showGrid(){
+    pDetailWrap.classList.remove('show');
+    pGrid.style.display='grid';
+    pDetails.forEach(function(d){ d.classList.remove('show'); });
+    pTitle.textContent='¿Qué necesitás resolver ahora?';
+    pSub.textContent='Elegí tu situación. Te doy el mensaje exacto para pegarle a tu IA.';
+  }
+  function openPanic(){ pOverlay.classList.add('open'); document.body.style.overflow='hidden'; showGrid(); }
+  function closePanic(){ pOverlay.classList.remove('open'); document.body.style.overflow=''; }
+
+  pOpen.addEventListener('click', openPanic);
+  pClose.addEventListener('click', closePanic);
+  pOverlay.addEventListener('click', function(e){ if(e.target===pOverlay) closePanic(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && pOverlay.classList.contains('open')) closePanic(); });
+  pBack.addEventListener('click', showGrid);
+
+  document.querySelectorAll('[data-panic]').forEach(function(card){
+    card.addEventListener('click', function(){
+      var id=card.getAttribute('data-panic');
+      pGrid.style.display='none';
+      pDetailWrap.classList.add('show');
+      pDetails.forEach(function(d){ d.classList.toggle('show', d.getAttribute('data-detail')===id); });
+      pTitle.textContent='Listo para resolverlo';
+      pSub.textContent='Copiá el mensaje y pegalo en tu IA.';
+      pDetailWrap.scrollIntoView({block:'nearest'});
+    });
+  });
+
+  /* ----- guide modal ----- */
+  var gOpen=document.getElementById('guideOpen');
+  var gOverlay=document.getElementById('guideOverlay');
+  var gClose=document.getElementById('guideClose');
+  var gInput=document.getElementById('guideInput');
+  var gGo=document.getElementById('guideGo');
+  var gResult=document.getElementById('guideResult');
+
+  var MODS={
+    m1:{n:'Módulo 1 — El Cerebro', why:'Aprendés a pedirle bien a la IA. Es la base para que todo lo demás funcione.'},
+    m2:{n:'Módulo 2 — El Asistente Comercial', why:'Responder clientes, presupuestos, seguimientos y la objeción de precio.'},
+    m3:{n:'Módulo 3 — El Community Manager', why:'Ideas y publicaciones listas para redes, sin quedarte en blanco.'},
+    m4:{n:'Módulo 4 — Biblioteca Maestra de Conversaciones', why:'Los mensajes difíciles, resueltos: cobrar, disculparse, aclarar, proponer.'},
+    m5:{n:'Módulo 5 — El Director General IA', why:'Ordenar tareas, priorizar tu semana y decidir con la cabeza clara.'},
+    m6:{n:'Módulo 6 — El Creador de Dinero IA', why:'Pasar una idea a tierra: ofertas, precios y nuevas formas de ingresos.'},
+    m7:{n:'Módulo 7 — El Coach Personal IA', why:'Pensar mejor: decisiones, foco, hábitos y conversaciones importantes.'}
+  };
+  var RULES=[
+    {m:'m3', k:['public','post','instagram','facebook','reel','contenido','redes','historia','subir foto']},
+    {m:'m2', k:['cliente','responder','consulta','presupuesto','vender','venta','precio','caro','reclamo','queja','seguimiento','cotiz','presupuestar']},
+    {m:'m4', k:['email','correo','cobrar','deuda','factura','pago','disculp','malentendido','propuesta','whatsapp','reunion','reunión','aclarar']},
+    {m:'m5', k:['organiz','semana','día','dia','agenda','prioridad','tarea','planific','foco','tiempo','caos','ordenar']},
+    {m:'m6', k:['idea','negocio','oferta','monetiz','ingreso','producto','lanzar','lanzamiento','dinero','bajarla','bajar a tierra','vender más','vender mas','plata','rubro','cambiar de rubro','emprender']},
+    {m:'m7', k:['decisión','decision','decidir','hábito','habito','motivación','motivacion','bloqueo','aprender','entrevista','estancad','propósito','proposito']},
+    {m:'m1', k:['no sé','no se','empezar','prompt','pedir','pedirle','no sé qué','no se que','cómo le pido','como le pido']}
+  ];
+
+  function recommend(text){
+    var t=(text||'').toLowerCase();
+    for(var i=0;i<RULES.length;i++){
+      for(var j=0;j<RULES[i].k.length;j++){
+        if(t.indexOf(RULES[i].k[j])!==-1){ return RULES[i].m; }
+      }
+    }
+    return 'm1';
+  }
+  function renderRec(mod){
+    var d=MODS[mod];
+    gResult.innerHTML =
+      '<div class="g-rec">'+
+        '<span class="g-rec-eyebrow">Te recomiendo abrir</span>'+
+        '<div class="g-rec-name">'+d.n+'</div>'+
+        '<p class="g-rec-why">'+d.why+'</p>'+
+        '<p class="g-rec-foot">¿Lo necesitás resolver ya mismo? Abrí <b>⚡ Resolución rápida</b> y copiá un mensaje listo para tu IA.</p>'+
+        '<button class="btn btn-primary" id="gToPanic">⚡ Abrir Resolución rápida</button>'+
+      '</div>';
+    document.getElementById('gToPanic').addEventListener('click', function(){
+      closeGuide(); openPanic();
+    });
+  }
+  function doRecommend(){
+    var v=gInput.value.trim();
+    if(!v){ gResult.innerHTML='<p class="guide-hint">Escribí una línea sobre lo que necesitás, o tocá uno de los ejemplos de arriba.</p>'; return; }
+    renderRec(recommend(v));
+  }
+  function openGuide(){ gOverlay.classList.add('open'); document.body.style.overflow='hidden'; gResult.innerHTML=''; gInput.value=''; setTimeout(function(){ gInput.focus(); },120); }
+  function closeGuide(){ gOverlay.classList.remove('open'); document.body.style.overflow=''; }
+
+  gOpen.addEventListener('click', openGuide);
+  gClose.addEventListener('click', closeGuide);
+  gOverlay.addEventListener('click', function(e){ if(e.target===gOverlay) closeGuide(); });
+  gGo.addEventListener('click', doRecommend);
+  gInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doRecommend(); });
+  document.querySelectorAll('#guideOverlay .guide-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      gInput.value=chip.getAttribute('data-ex');
+      renderRec(recommend(chip.getAttribute('data-ex')));
+    });
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && gOverlay.classList.contains('open')) closeGuide(); });
+
+  /* ----- global search ----- */
+  var sInput=document.getElementById('globalSearch');
+  var sResults=document.getElementById('searchResults');
+  var SEARCH_INDEX=[
+    {emo:'💬', tit:'Responder un cliente enojado', sub:'Respuesta empática, sin discutir', mod:'Módulo 2', target:'mod-m2', tags:['cliente','enojado','reclamo','queja','responder','molesto']},
+    {emo:'💸', tit:'Manejar la objeción de precio', sub:'Pasar de precio a valor', mod:'Módulo 2', target:'mod-m2', tags:['precio','caro','barato','descuento','presupuesto']},
+    {emo:'📲', tit:'Responder por WhatsApp', sub:'Mensajes y seguimientos', mod:'Módulo 2', target:'mod-m2', tags:['whatsapp','mensaje','seguimiento','consulta']},
+    {emo:'📱', tit:'Crear contenido para Instagram', sub:'Posts, reels e ideas', mod:'Módulo 3', target:'mod-m3', tags:['instagram','contenido','post','reel','publicar','redes','facebook','historia']},
+    {emo:'🗂️', tit:'Organizar mi semana', sub:'Priorizar tareas y foco', mod:'Módulo 5', target:'mod-m5', tags:['organizar','semana','dia','día','tareas','prioridad','agenda','planificar','caos']},
+    {emo:'💰', tit:'Vender más', sub:'Ofertas, precios y promociones', mod:'Módulo 6', target:'mod-m6', tags:['vender','venta','oferta','promocion','promoción','ingresos','dinero']},
+    {emo:'📧', tit:'Escribir un email', sub:'Claro, cordial y profesional', mod:'Módulo 4', target:'mod-m4', tags:['email','correo','mail','propuesta','cobrar','disculpa','malentendido']},
+    {emo:'💡', tit:'Convertir una idea en producto', sub:'Validar y bajar a tierra', mod:'Módulo 6', target:'mod-m6', tags:['idea','producto','negocio','lanzar','monetizar','validar']},
+    {emo:'🧠', tit:'Tomar una decisión', sub:'Comparar opciones con criterio', mod:'Módulo 7', target:'mod-m7', tags:['decisión','decision','decidir','opciones','dudo','bloqueo']},
+    {emo:'✍️', tit:'Aprender a pedirle a la IA', sub:'La base de todo el sistema', mod:'Módulo 1', target:'mod-m1', tags:['prompt','pedir','empezar','cerebro','contexto']},
+    {emo:'🚀', tit:'Plan de 21 días', sub:'Volver la IA un hábito', mod:'Libro de Misiones', target:'mod-misiones', tags:['hábito','habito','rutina','misión','mision','plan','desafío']},
+    {emo:'✦', tit:'100 prompts para todo', sub:'Consulta rápida', mod:'100 Prompts', target:'mod-prompts', tags:['prompts','atajos','rápido','rapido','biblioteca']}
+  ];
+  function searchMatch(q){
+    q=q.trim().toLowerCase();
+    if(!q) return [];
+    return SEARCH_INDEX.filter(function(it){
+      if(it.tit.toLowerCase().indexOf(q)!==-1) return true;
+      if(it.sub.toLowerCase().indexOf(q)!==-1) return true;
+      for(var i=0;i<it.tags.length;i++){
+        if(it.tags[i].indexOf(q)!==-1 || q.indexOf(it.tags[i])!==-1) return true;
+      }
+      return false;
+    }).slice(0,6);
+  }
+  function renderSearch(q){
+    var res=searchMatch(q);
+    if(!q.trim()){ sResults.classList.remove('show'); sResults.innerHTML=''; return; }
+    if(res.length===0){
+      sResults.innerHTML='<div class="sr-empty">No encontré una coincidencia exacta. Probá con: cliente, precio, Instagram, organizar, idea…</div>';
+      sResults.classList.add('show'); return;
+    }
+    sResults.innerHTML=res.map(function(it){
+      return '<button class="sr" data-target="'+it.target+'">'+
+        '<span class="sr-emo">'+it.emo+'</span>'+
+        '<span><span class="sr-tit">'+it.tit+'</span><span class="sr-sub">'+it.sub+'</span></span>'+
+        '<span class="sr-mod">'+it.mod+' →</span></button>';
+    }).join('');
+    sResults.classList.add('show');
+  }
+  if(sInput){
+    sInput.addEventListener('input', function(){ renderSearch(sInput.value); });
+    sInput.addEventListener('focus', function(){ if(sInput.value.trim()) renderSearch(sInput.value); });
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('.search')) sResults.classList.remove('show');
+      var row=e.target.closest('.sr');
+      if(row && row.getAttribute('data-target')){
+        var el=document.getElementById(row.getAttribute('data-target'));
+        sResults.classList.remove('show'); sInput.blur();
+        if(el){
+          el.scrollIntoView({behavior:'smooth', block:'center'});
+          el.style.borderColor='var(--accent)';
+          el.style.boxShadow='0 0 0 4px rgba(35,84,247,.14)';
+          setTimeout(function(){ el.style.borderColor=''; el.style.boxShadow=''; }, 1700);
+        }
+      }
+    });
+  }
+
+  /* ----- surprise me ----- */
+  var suOpen=document.getElementById('surpriseOpen');
+  var suOverlay=document.getElementById('surpriseOverlay');
+  var suClose=document.getElementById('surpriseClose');
+  var suSlot=document.getElementById('surpriseSlot');
+  var suMore=document.getElementById('surpriseMore');
+  function copyHead(){ return '<div class="prompt-head"><span class="label">Conversación lista para copiar</span><button class="fav-btn" aria-label="Guardar como favorito" aria-pressed="false" title="Guardar como favorito"><svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></button><button class="copy-btn" data-copy><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button></div>'; }
+  var SURPRISES=[
+    {type:'Prompt útil', emo:'💬', title:'Convertí características en beneficios', body:'Lo que vendés suena mejor cuando hablás de lo que el cliente gana.', prompt:'Tomá estas características de mi producto: [PEGALAS] y transformalas en beneficios concretos y atractivos para mi cliente ideal.'},
+    {type:'Misión rápida', emo:'🎯', title:'La misión de hoy (5 minutos)', body:'Copiá un mensaje que mandaste esta semana y pedile a la IA que lo deje más claro, cercano y profesional. Compará el antes y el después.'},
+    {type:'Idea para vender más', emo:'💰', title:'Armá un combo', body:'Juntá tu producto principal con un extra de bajo costo para vos pero de alto valor percibido. Subís el ticket sin bajar el precio.'},
+    {type:'Ahorrá tiempo', emo:'⏱️', title:'Tus 3 respuestas de siempre', body:'Identificá las 3 preguntas que más te repiten y guardá las respuestas como “respuestas rápidas” en WhatsApp Business. No las escribís nunca más.'},
+    {type:'Probá este módulo', emo:'🧠', title:'10 minutos con el Coach Personal IA', body:'Reservá 10 minutos para decidir, con la IA, cuál es tu prioridad número uno de hoy y el primer paso más chico para avanzar.'},
+    {type:'Prompt útil', emo:'📱', title:'30 ideas de contenido en un minuto', body:'Para no quedarte nunca sin qué publicar.', prompt:'Dame 30 ideas de contenido para mi negocio de [RUBRO], combinando publicaciones educativas, emocionales y de venta.'},
+    {type:'Idea', emo:'💡', title:'Nuevas fuentes de ingreso', body:'Pedile a la IA 10 formas distintas de generar ingresos a partir de lo que ya sabés hacer. Vas a encontrar al menos una que no se te había ocurrido.'},
+    {type:'Misión rápida', emo:'✍️', title:'Tu propuesta de valor en una frase', body:'Definí en una sola línea qué hacés, a quién ayudás y qué problema resolvés. Ponela hoy mismo en tu bio.'},
+    {type:'Acción simple', emo:'⚡', title:'Automatizá una tarea repetitiva', body:'Elegí algo que hacés todas las semanas y armá una conversación reutilizable para acelerarlo. Es el primer ladrillo de tu biblioteca personal.'},
+    {type:'Prompt útil', emo:'🤝', title:'Cuando dicen “es caro”', body:'Una respuesta que cambia precio por valor.', prompt:'Escribí una respuesta empática para un cliente que dice que mi precio es caro, sin discutir ni presionar. Reforzá el valor y cerrá invitando a seguir conversando.'},
+    {type:'Idea para vender más', emo:'🔁', title:'Reactivá clientes viejos', body:'Mandá hoy un mensaje cordial a 5 personas que no te compran hace meses. Es la venta más barata que existe.'}
+  ];
+  var lastIdx=-1;
+  function renderSurprise(){
+    var i=Math.floor(Math.random()*SURPRISES.length);
+    if(SURPRISES.length>1){ while(i===lastIdx){ i=Math.floor(Math.random()*SURPRISES.length); } }
+    lastIdx=i;
+    var s=SURPRISES[i];
+    var html='<div class="surprise-card"><span class="s-type">'+s.type+'</span>'+
+      '<h4><span class="s-emo">'+s.emo+'</span>'+s.title+'</h4>'+
+      '<p class="s-body">'+s.body+'</p>';
+    if(s.prompt){ html+='<div class="prompt" style="margin-top:16px">'+copyHead()+'<pre>'+s.prompt+'</pre></div>'; }
+    html+='</div>';
+    suSlot.innerHTML=html;
+  }
+  function openSurprise(){ suOverlay.classList.add('open'); document.body.style.overflow='hidden'; renderSurprise(); }
+  function closeSurprise(){ suOverlay.classList.remove('open'); document.body.style.overflow=''; }
+  suOpen.addEventListener('click', openSurprise);
+  suClose.addEventListener('click', closeSurprise);
+  suMore.addEventListener('click', renderSurprise);
+  suOverlay.addEventListener('click', function(e){ if(e.target===suOverlay) closeSurprise(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && suOverlay.classList.contains('open')) closeSurprise(); });
+
+  /* ----- journey progress ----- */
+  var jrows=Array.prototype.slice.call(document.querySelectorAll('[data-j]'));
+  var jBar=document.getElementById('jBar');
+  var jLabel=document.getElementById('jLabel');
+  var jPct=document.getElementById('jPct');
+  function jUpdate(){
+    var n=jrows.filter(function(r){return r.classList.contains('done');}).length;
+    var pct=Math.round(n/jrows.length*100);
+    jBar.style.width=pct+'%';
+    jPct.textContent=pct+'%';
+    jLabel.textContent=(n===jrows.length)?'¡Sistema completo!':(n+' de '+jrows.length+' completado');
+  }
+  jrows.forEach(function(r){ r.addEventListener('click', function(){ r.classList.toggle('done'); jUpdate(); }); });
+
+  /* ----- think modal (Pensémoslo juntos) ----- */
+  var THINK={
+    m1:{step:'Presentale tu negocio a la IA en cuatro líneas: qué hacés, qué vendés, quién es tu cliente y cómo te gusta comunicarte.', prompt:'Vas a ser mi asistente de trabajo. Te doy el contexto de mi negocio: [DESCRIBILO]. Confirmame que entendiste y haceme 3 preguntas para conocerlo mejor.'},
+    m2:{step:'Tomá el mensaje del cliente y pedile a la IA una respuesta empática que baje la tensión, sin discutir ni presionar.', prompt:'Actuá como responsable de atención al cliente, con calma. Un cliente me escribió esto: [PEGALO]. Escribí una respuesta empática que reconozca su situación y proponga un paso concreto para resolverlo.'},
+    m3:{step:'Pedile 30 ideas de contenido para tu rubro y quedate con 3 para esta semana.', prompt:'Tengo un negocio de [RUBRO]. Dame 30 ideas de contenido combinando educativo, emocional y de venta, y marcá las 5 mejores.'},
+    m4:{step:'Agarrá ese mensaje que venís postergando (un cobro, una disculpa) y pedile el primer borrador.', prompt:'Ayudame a redactar un mensaje [cobro / disculpa / aclaración] sobre: [DESCRIBILO]. Tono cordial, profesional y claro, manteniendo una buena relación.'},
+    m5:{step:'Pegá tu lista de pendientes y pedile el plan de hoy con solo 3 prioridades.', prompt:'Estas son mis tareas: [PEGALAS]. Ordenalas por impacto y urgencia y armame el plan de hoy con las 3 prioridades y en qué orden hacerlas.'},
+    m6:{step:'Describí tu idea o producto y pedile una oferta y un precio sugerido.', prompt:'Tengo esta idea o producto: [DESCRIBILO]. Actuá como consultor de negocios: proponé una oferta atractiva, un precio sugerido y por qué podría funcionar.'},
+    m7:{step:'Escribí la decisión que tenés trabada y pedile que compare opciones y te haga preguntas.', prompt:'Tengo que tomar esta decisión: [DESCRIBILA]. Compará las opciones con ventajas y riesgos, y haceme las preguntas clave que debería responderme antes de decidir.'}
+  };
+  var thinkOverlay=document.getElementById('thinkOverlay');
+  var thinkIn=document.getElementById('thinkIn');
+  function thinkRender(text){
+    var m=recommend(text), d=MODS[m], t=THINK[m];
+    var safe=(text||'').replace(/</g,'&lt;');
+    var html='<div class="mentor">'+
+      '<p class="mentor-intro">Te leo. Vamos a ordenarlo en tres pasos. 👇</p>'+
+      '<div class="mentor-row"><span class="mn">1</span><div><h5>Por dónde arrancar</h5><p>Para esto, tu mejor punto de partida es <b>'+d.n+'</b>. '+d.why+'</p></div></div>'+
+      '<div class="mentor-row"><span class="mn">2</span><div><h5>Tu primer paso concreto</h5><p>'+t.step+'</p></div></div>'+
+      '<div class="mentor-row"><span class="mn">3</span><div style="flex:1;min-width:0"><h5>Llevá esto a tu IA</h5><div class="prompt">'+copyHead()+'<pre>Mi situación: "'+safe+'".\n\n'+t.prompt+'</pre></div></div></div>'+
+      '<p class="mentor-note">Este espacio es para pensar con vos, no para darte una respuesta automática. Cuando conectes tu IA, vas a poder desarrollar la conversación completa partiendo de acá.</p>'+
+    '</div>';
+    document.getElementById('thinkRes').innerHTML=html;
+    document.getElementById('thinkRes').scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+  function openThink(){ thinkOverlay.classList.add('open'); document.body.style.overflow='hidden'; document.getElementById('thinkRes').innerHTML=''; thinkIn.value=''; setTimeout(function(){ thinkIn.focus(); },120); }
+  function closeThink(){ thinkOverlay.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('thinkOpen').addEventListener('click', openThink);
+  document.getElementById('thinkClose').addEventListener('click', closeThink);
+  thinkOverlay.addEventListener('click', function(e){ if(e.target===thinkOverlay) closeThink(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && thinkOverlay.classList.contains('open')) closeThink(); });
+  document.getElementById('thinkGo').addEventListener('click', function(){ var v=thinkIn.value.trim(); if(!v){ thinkIn.focus(); thinkIn.style.borderColor='#c0392b'; setTimeout(function(){ thinkIn.style.borderColor=''; },1200); return; } thinkRender(v); });
+  thinkIn.addEventListener('keydown', function(e){ if(e.key==='Enter' && (e.metaKey||e.ctrlKey)) document.getElementById('thinkGo').click(); });
+  thinkOverlay.querySelectorAll('.guide-chip').forEach(function(c){ c.addEventListener('click', function(){ thinkIn.value=c.getAttribute('data-ex'); thinkRender(c.getAttribute('data-ex')); }); });
+
+  /* ----- persistence (localStorage, no backend) ----- */
+  function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+  var favBtns=Array.prototype.slice.call(document.querySelectorAll('.fav-btn'));
+  favBtns.forEach(function(b,i){ b.setAttribute('data-fav', i); });
+  (function(){ var sv=lsGet('tpe_favs')||[]; sv.forEach(function(i){ if(favBtns[i]) favBtns[i].classList.add('faved'); }); })();
+  function saveFavs(){ var a=[]; favBtns.forEach(function(b,i){ if(b.classList.contains('faved')) a.push(i); }); lsSet('tpe_favs', a); }
+
+  function saveWin(){ var a=[]; steps.forEach(function(s,i){ if(s.classList.contains('done')) a.push(i); }); lsSet('tpe_win', a); }
+  (function(){ var sv=lsGet('tpe_win'); if(sv && sv.length){ sv.forEach(function(i){ if(steps[i]) steps[i].classList.add('done'); }); update(); } })();
+
+  function saveJourney(){ var a=[]; jrows.forEach(function(r,i){ if(r.classList.contains('done')) a.push(i); }); lsSet('tpe_journey', a); }
+  (function(){ var sv=lsGet('tpe_journey'); if(sv){ jrows.forEach(function(r){ r.classList.remove('done'); }); sv.forEach(function(i){ if(jrows[i]) jrows[i].classList.add('done'); }); jUpdate(); } })();
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest) return;
+    if(e.target.closest('.fav-btn[data-fav]')) saveFavs();
+    if(e.target.closest('.step .check')) saveWin();
+    if(e.target.closest('[data-j]')) saveJourney();
+  });
+
+  /* ----- scroll reveal ----- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
